@@ -60,7 +60,7 @@ public class ScreenView extends View implements OnRepaint {
         if (widthMode == MeasureSpec.EXACTLY){
             width = widthSize;
         }else {
-            width = getShapeRight() + getShapeLeft();
+            width = getShapesRight() + getShapesLeft();
             if (widthMode == MeasureSpec.AT_MOST){
                 width=Math.min(width,widthSize);
             }
@@ -68,7 +68,7 @@ public class ScreenView extends View implements OnRepaint {
         if (heightMode == MeasureSpec.EXACTLY){
             height = heightSize;
         }else {
-            height = getShapeTop() + getShapeBottom();
+            height = getShapesTop() + getShapesBottom();
             if (heightMode == MeasureSpec.AT_MOST){
                 height=Math.min(height,heightSize);
             }
@@ -76,38 +76,38 @@ public class ScreenView extends View implements OnRepaint {
         setMeasuredDimension(width, height);
     }
 
-    private int getShapeRight() {
+    private int getShapesRight() {
         if (shapes.size() == 0) return 0;
-        int value = shapes.get(0).getX() + shapes.get(0).getWidth();
+        int value = shapes.get(0).getBorderRight();
         for (Shape shape : shapes) {
-            value = Math.max(value, shape.getX() + shape.getWidth());
+            value = Math.max(value, shape.getBorderRight());
         }
         return value;
     }
 
-    private int getShapeBottom() {
+    private int getShapesBottom() {
         if (shapes.size() == 0) return 0;
-        int value = shapes.get(0).getY() + shapes.get(0).getHeight();
+        int value = shapes.get(0).getBorderBottom();
         for (Shape shape : shapes) {
-            value = Math.max(value, shape.getY() + shape.getHeight());
+            value = Math.max(value, shape.getBorderBottom());
         }
         return value;
     }
 
-    private int getShapeLeft() {
+    private int getShapesLeft() {
         if (shapes.size() == 0) return 0;
-        int value = shapes.get(0).getX();
+        int value = shapes.get(0).getBorderLeft();
         for (Shape shape : shapes) {
-            value = Math.min(value, shape.getX());
+            value = Math.min(value, shape.getBorderLeft());
         }
         return value;
     }
 
-    private int getShapeTop() {
+    private int getShapesTop() {
         if (shapes.size() == 0) return 0;
-        int value = shapes.get(0).getY();
+        int value = shapes.get(0).getBorderTop();
         for (Shape shape : shapes) {
-            value = Math.min(value, shape.getY());
+            value = Math.min(value, shape.getBorderTop());
         }
         return value;
     }
@@ -119,7 +119,7 @@ public class ScreenView extends View implements OnRepaint {
             shape.draw(canvas);
         }
         long e = System.currentTimeMillis();
-        Log.i(TAG, "onDraw: time:"+(e-s));
+//        Log.i(TAG, "onDraw: time:"+(e-s));
     }
 
     /**

@@ -15,4 +15,9 @@ public class ShapeGroup extends Shape {
             shape.draw(canvas);
         }
     }
+
+    @Override
+    public void updateBorder() {
+
+    }
 }

@@ -1,53 +1,71 @@
 package com.xindq.yilan.view.shape;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.Point;
 
-public class RectangleShape extends Shape{
-    private int lineWidth=4;
-    private int lineColor=Color.BLACK;
-    private int fillColor=Color.WHITE;
+import java.util.List;
 
-    @Override
-    public void onDraw(Canvas canvas) {
-        Rect rect = new Rect(getX(), getY(), getX() + getWidth(), getY() + getHeight());
+public class RectangleShape extends PolygonShape {
+    /**
+     * 设置宽高相对位置
+     */
+    public static final int RELATIVE_LEFT = 1;
+    public static final int RELATIVE_RIGHT = 2;
+    public static final int RELATIVE_TOP = 3;
+    public static final int RELATIVE_BOTTOM = 4;
+    /**
+     * 宽高
+     */
+    private float width;
+    private float height;
 
-        Paint paint = getPaint();
-        paint.setStrokeWidth(lineWidth);
-
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(fillColor);
-        canvas.drawRect(rect,paint);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(lineColor);
-        canvas.drawRect(rect,paint);
+    public RectangleShape(List<Point> points) {
+        super(points);
+        updateWidthAndWidth();
     }
 
-    //<editor-fold desc="getter and setter">
-    public int getLineWidth() {
-        return lineWidth;
+    private void updateWidthAndWidth() {
+        List<Point> points = getPoints();
+        int x0 = points.get(0).x;
+        int y0 = points.get(0).y;
+        int x1 = points.get(1).x;
+        int y1 = points.get(1).y;
+        int x2 = points.get(2).x;
+        int y2 = points.get(2).y;
+        this.width = (float) Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));
+        this.height = (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
-    public void setLineWidth(int lineWidth) {
-        this.lineWidth = lineWidth;
+    public float getWidth() {
+        return width;
     }
 
-    public int getLineColor() {
-        return lineColor;
+    public void setWidth(float width, int relative) {
+        if (relative == RELATIVE_LEFT) {
+            Util.scale(getPoint(0), getPoint(1), width / this.width);
+            Util.scale(getPoint(3), getPoint(2), width / this.width);
+        } else if (relative == RELATIVE_RIGHT) {
+            Util.scale(getPoint(1), getPoint(0), width / this.width);
+            Util.scale(getPoint(2), getPoint(3), width / this.width);
+        }
+        this.width = width;
+        updateBorder();
+        updatePath();
     }
 
-    public void setLineColor(int lineColor) {
-        this.lineColor = lineColor;
+    public float getHeight() {
+        return height;
     }
 
-    public int getFillColor() {
-        return fillColor;
+    public void setHeight(float height, int relative) {
+        if (relative == RELATIVE_TOP) {
+            Util.scale(getPoint(0), getPoint(3), height / this.height);
+            Util.scale(getPoint(1), getPoint(2), height / this.height);
+        } else if (relative == RELATIVE_BOTTOM) {
+            Util.scale(getPoint(3), getPoint(0), height / this.height);
+            Util.scale(getPoint(2), getPoint(1), height / this.height);
+        }
+        this.height = height;
+        updateBorder();
+        updatePath();
     }
-
-    public void setFillColor(int fillColor) {
-        this.fillColor = fillColor;
-    }
-    //</editor-fold>
 }
