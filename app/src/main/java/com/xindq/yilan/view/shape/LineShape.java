@@ -31,11 +31,11 @@ public class LineShape extends Shape {
         setBorderTop(Math.min(start.y, end.y));
         setBorderRight(Math.max(start.x, end.x));
         setBorderBottom(Math.max(start.y, end.y));
-        if (getBorderRight() - getBorderLeft() < 20) {
-            setBorderLeft((getBorderLeft() + getBorderRight()) / 2 - 10);
-            setBorderRight((getBorderLeft() + getBorderRight()) / 2 + 10);
+        if (getBorderRight() - getBorderLeft() < 40) {
+            setBorderLeft((getBorderLeft() + getBorderRight()) / 2 - 20);
+            setBorderRight((getBorderLeft() + getBorderRight()) / 2 + 20);
         }
-        if (getBorderBottom() - getBorderTop() < 20) {
+        if (getBorderBottom() - getBorderTop() < 40) {
             setBorderTop((getBorderTop() + getBorderBottom()) / 2 - 10);
             setBorderBottom((getBorderTop() + getBorderBottom()) / 2 + 10);
         }

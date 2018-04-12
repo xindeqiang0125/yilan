@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         circleShape = new CircleShape(100,50,new Point(200,200), (float) (Math.PI/4));
 
         lineArrowShape=new LineArrowShape(new Point(600,300),
-                new Point(100,550));
-        lineArrowShape.setLineWidth(10);
+                new Point(600,650));
+        lineArrowShape.setLineWidth(2);
         lineArrowShape.setLineColor(Color.RED);
 
         ShapeGroup group2=new ShapeGroup();
