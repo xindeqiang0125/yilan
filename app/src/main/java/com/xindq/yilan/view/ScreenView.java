@@ -119,7 +119,7 @@ public class ScreenView extends View implements OnRepaint {
             shape.draw(canvas);
         }
         long e = System.currentTimeMillis();
-//        Log.i(TAG, "onDraw: time:"+(e-s));
+        Log.i(TAG, "onDraw: time:"+(e-s));
     }
 
     /**

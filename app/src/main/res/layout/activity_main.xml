@@ -16,7 +16,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:layout_margin="10dp"
-                app:refreshTime="50"/>
+                app:refreshTime="100"/>
         </LinearLayout>
     </HorizontalScrollView>
 </ScrollView>

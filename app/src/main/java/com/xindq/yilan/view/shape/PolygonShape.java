@@ -8,9 +8,6 @@ import java.util.List;
 public class PolygonShape extends Shape {
     private List<Point> points = new ArrayList<>();
     private Path path = new Path();
-    private int lineWidth = 4;
-    private int lineColor = Color.BLACK;
-    private int fillColor = Color.WHITE;
 
     public PolygonShape() {
     }
@@ -24,12 +21,12 @@ public class PolygonShape extends Shape {
     @Override
     public void onDraw(Canvas canvas) {
         Paint paint = getPaint();
-        paint.setStrokeWidth(lineWidth);
+        paint.setStrokeWidth(getLineWidth());
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(fillColor);
+        paint.setColor(getFillColor());
         canvas.drawPath(path, paint);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(lineColor);
+        paint.setColor(getLineColor());
         canvas.drawPath(path, paint);
     }
 
@@ -83,30 +80,6 @@ public class PolygonShape extends Shape {
     }
 
     //<editor-fold desc="getter and setter">
-    public int getLineWidth() {
-        return lineWidth;
-    }
-
-    public void setLineWidth(int lineWidth) {
-        this.lineWidth = lineWidth;
-    }
-
-    public int getLineColor() {
-        return lineColor;
-    }
-
-    public void setLineColor(int lineColor) {
-        this.lineColor = lineColor;
-    }
-
-    public int getFillColor() {
-        return fillColor;
-    }
-
-    public void setFillColor(int fillColor) {
-        this.fillColor = fillColor;
-    }
-
     public List<Point> getPoints() {
         return points;
     }

@@ -1,7 +1,9 @@
 package com.xindq.yilan.view.shape;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 
 public abstract class Shape {
@@ -19,7 +21,7 @@ public abstract class Shape {
     /**
      * 顺时针倾斜弧度
      */
-    private double radian = 0;
+    private float radian = 0;
     /**
      * Shape是否显示
      */
@@ -28,6 +30,13 @@ public abstract class Shape {
      * Shape是否闪烁
      */
     private boolean twinkle = false;
+
+    /**
+     * 样式
+     */
+    private int lineWidth = 4;
+    private int lineColor = Color.BLACK;
+    private int fillColor = Color.WHITE;
 
     /**
      * 画笔
@@ -49,10 +58,17 @@ public abstract class Shape {
     public void draw(Canvas canvas) {
         if (isShow()) {
             canvas.save();
-            canvas.rotate((float) getDegree(), getBorderLeft() + getBorderWidth() / 2, getBorderTop() + getBorderHeight() / 2);
+            canvas.rotate(getDegree(), (getBorderLeft() + getBorderRight()) / 2, (getBorderTop() + getBorderBottom()) / 2);
             onDraw(canvas);
             canvas.restore();
+            drawBorder(canvas);
         }
+    }
+
+    protected void drawBorder(Canvas canvas){
+        getPaint().setStyle(Paint.Style.STROKE);
+        RectF rectF=new RectF(getBorderLeft(),getBorderTop(),getBorderRight(),getBorderBottom());
+        canvas.drawRect(rectF,getPaint());
     }
 
     public abstract void onDraw(Canvas canvas);
@@ -128,15 +144,15 @@ public abstract class Shape {
         this.twinkle = twinkle;
     }
 
-    public double getRadian() {
+    public float getRadian() {
         return radian;
     }
 
-    public double getDegree() {
-        return radian * 180 / Math.PI;
+    public float getDegree() {
+        return (float) (radian * 180 / Math.PI);
     }
 
-    public void setRadian(double radian) {
+    public void setRadian(float radian) {
         this.radian = radian;
     }
 
@@ -146,6 +162,30 @@ public abstract class Shape {
 
     public void setPaint(Paint paint) {
         this.paint = paint;
+    }
+
+    public int getLineWidth() {
+        return lineWidth;
+    }
+
+    public void setLineWidth(int lineWidth) {
+        this.lineWidth = lineWidth;
+    }
+
+    public int getLineColor() {
+        return lineColor;
+    }
+
+    public void setLineColor(int lineColor) {
+        this.lineColor = lineColor;
+    }
+
+    public int getFillColor() {
+        return fillColor;
+    }
+
+    public void setFillColor(int fillColor) {
+        this.fillColor = fillColor;
     }
     //</editor-fold>
 
