@@ -34,6 +34,7 @@ public class Condition {
      * @return
      */
     public boolean result(Map<String, String> datas){
+        if (condition==null||"".equals(condition.trim())) return true;
         String fullCondition = getFullCondition(datas);
         fullCondition=infixToSuffix(fullCondition);
         return validateSuffix(fullCondition);

@@ -2,6 +2,8 @@ package com.xindq.yilan.view.shape;
 
 import android.graphics.Point;
 
+import com.xindq.yilan.view.config.Action;
+
 import java.util.List;
 
 public class RectangleShape extends PolygonShape {
@@ -20,10 +22,10 @@ public class RectangleShape extends PolygonShape {
 
     public RectangleShape(List<Point> points) {
         super(points);
-        updateWidthAndWidth();
+        updateWidthAndHeight();
     }
 
-    private void updateWidthAndWidth() {
+    private void updateWidthAndHeight() {
         List<Point> points = getPoints();
         int x0 = points.get(0).x;
         int y0 = points.get(0).y;
@@ -33,6 +35,26 @@ public class RectangleShape extends PolygonShape {
         int y2 = points.get(2).y;
         this.width = (float) Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));
         this.height = (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+
+    /**
+     * 对本shape执行动态效果
+     *
+     * @param type   动态效果类型，见Action中定义。
+     * @param value  实时值
+     * @param option 附加参数 见每种Shape中定义的常量（不是每种Shape都有）。
+     */
+    @Override
+    public void excuteAction(int type, Object value, int option) {
+        super.excuteAction(type, value, option);
+        switch (type){
+            case Action.WIDTH:
+                setWidth((float) value,option);
+                break;
+            case Action.HEIGHT:
+                setHeight((float) value,option);
+                break;
+        }
     }
 
     public float getWidth() {

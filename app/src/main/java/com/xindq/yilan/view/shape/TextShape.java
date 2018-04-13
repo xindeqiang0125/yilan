@@ -8,6 +8,8 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.Log;
 
+import com.xindq.yilan.view.config.Action;
+
 public class TextShape extends Shape {
     private static final String TAG = "TextShape";
     private String[] texts;
@@ -56,6 +58,38 @@ public class TextShape extends Shape {
         setBorderBottom(position.y + h);
     }
 
+    @Override
+    public void move(int dx, int dy) {
+        position.set(position.x+dx,position.y+dy);
+        updateBorder();
+    }
+
+    /**
+     * 对本shape执行动态效果
+     *
+     * @param type   动态效果类型，见Action中定义。
+     * @param value  实时值
+     * @param option 附加参数 见每种Shape中定义的常量（不是每种Shape都有）。
+     */
+    @Override
+    public void excuteAction(int type, Object value, int option) {
+        super.excuteAction(type, value, option);
+        switch (type){
+            case Action.TEXTS:
+                setTexts((String[]) value);
+                break;
+            case Action.TEXT_COLOR:
+                setTextColor((Integer) value);
+                break;
+            case Action.BACKGROUND_COLOR:
+                setBackgroundColor((Integer) value);
+                break;
+            case Action.TEXT_SIZE:
+                setTextSize((Integer) value);
+                break;
+        }
+    }
+
     /**
      * 获取文本宽度
      * @param paint
@@ -81,6 +115,7 @@ public class TextShape extends Shape {
 
     public void setTexts(String[] texts) {
         this.texts = texts;
+        updateBorder();
     }
 
     public int getBackgroundColor() {

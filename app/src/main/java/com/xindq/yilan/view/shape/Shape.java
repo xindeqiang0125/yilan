@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.xindq.yilan.view.config.Action;
+
 
 public abstract class Shape {
     private static final String TAG = "Shape";
@@ -26,6 +28,12 @@ public abstract class Shape {
      * Shape是否显示
      */
     private boolean show = true;
+
+    /**
+     * 由于闪烁，记录之前的显示状态
+     */
+    private boolean oldShow = true;
+
     /**
      * Shape是否闪烁
      */
@@ -51,8 +59,7 @@ public abstract class Shape {
     }
 
     /**
-     * 绘制图形
-     *
+     * 绘制图形模板方法
      * @param canvas
      */
     public void draw(Canvas canvas) {
@@ -65,18 +72,62 @@ public abstract class Shape {
         }
     }
 
+    /**
+     * 绘制图形边界
+     * @param canvas
+     */
     protected void drawBorder(Canvas canvas){
         getPaint().setStyle(Paint.Style.STROKE);
         RectF rectF=new RectF(getBorderLeft(),getBorderTop(),getBorderRight(),getBorderBottom());
         canvas.drawRect(rectF,getPaint());
     }
 
+    /**
+     * 绘制图形抽象方法，由子类具体实现
+     * @param canvas
+     */
     public abstract void onDraw(Canvas canvas);
 
     /**
-     * 更新边界
+     * 更新边界，由子类具体实现
      */
     public abstract void updateBorder();
+
+    /**
+     * 对本shape执行动态效果
+     * @param type 动态效果类型，见Action中定义。
+     * @param value 实时值
+     * @param option 附加参数 见每种Shape中定义的常量（不是每种Shape都有）。
+     */
+    public void excuteAction(int type,Object value,int option){
+        switch (type){
+            case Action.POSITION_X:
+                move((int)value-getBorderLeft(),0);
+                break;
+            case Action.POSITION_Y:
+                move(0, (int)value-getBorderTop());
+                break;
+            case Action.RADIAN:
+                setRadian((float) value);
+                break;
+            case Action.LINE_COLOR:
+                setLineColor((int) value);
+                break;
+            case Action.FILL_COLOR:
+                setFillColor((int) value);
+                break;
+            case Action.LINE_WIDTH:
+                setLineWidth((int) value);
+                break;
+        }
+    }
+
+    /**
+     * 平移图形
+     * @param dx
+     * @param dy
+     */
+    public abstract void move(int dx,int dy);
 
     //<editor-fold desc="getter and setter">
 
@@ -142,6 +193,30 @@ public abstract class Shape {
 
     public void setTwinkle(boolean twinkle) {
         this.twinkle = twinkle;
+        if (twinkle){
+            oldShow=isShow();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    enableTwinkle();
+                }
+            }).start();
+        }
+    }
+
+    /**
+     * 启动闪烁
+     */
+    private void enableTwinkle() {
+        while (this.twinkle){
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            this.setShow(!isShow());
+        }
+        setShow(oldShow);
     }
 
     public float getRadian() {

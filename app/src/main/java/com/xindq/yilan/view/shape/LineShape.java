@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 
+import com.xindq.yilan.view.config.Action;
+
 public class LineShape extends Shape {
     public static final int RELATIVE_START = 1;
     public static final int RELATIVE_END = 2;
@@ -38,6 +40,42 @@ public class LineShape extends Shape {
         if (getBorderBottom() - getBorderTop() < 40) {
             setBorderTop((getBorderTop() + getBorderBottom()) / 2 - 10);
             setBorderBottom((getBorderTop() + getBorderBottom()) / 2 + 10);
+        }
+    }
+
+    @Override
+    public void move(int dx, int dy) {
+        start.set(start.x + dx, start.y + dy);
+        end.set(end.x + dx, end.y + dy);
+        updateBorder();
+    }
+
+    /**
+     * 对本shape执行动态效果
+     *
+     * @param type   动态效果类型，见Action中定义。
+     * @param value  实时值
+     * @param option 附加参数 见每种Shape中定义的常量（不是每种Shape都有）。
+     */
+    @Override
+    public void excuteAction(int type, Object value, int option) {
+        super.excuteAction(type, value, option);
+        switch (type){
+            case Action.LENGTH:
+                setLength((float) value,option);
+                break;
+            case Action.START_X:
+                setStart(new Point((int) value,getStart().y));
+                break;
+            case Action.START_Y:
+                setStart(new Point(getStart().x,(int) value));
+                break;
+            case Action.END_X:
+                setEnd(new Point((int) value,getEnd().y));
+                break;
+            case Action.END_Y:
+                setEnd(new Point(getEnd().x,(int) value));
+                break;
         }
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ShapeGroup extends Shape {
 
-    private List<Shape> shapes=new ArrayList<>();
+    private List<Shape> shapes = new ArrayList<>();
 
     @Override
     public void onDraw(Canvas canvas) {
@@ -20,12 +20,12 @@ public class ShapeGroup extends Shape {
     public void updateBorder() {
         for (int i = 0; i < shapes.size(); i++) {
             Shape shape = shapes.get(i);
-            if (i==0){
+            if (i == 0) {
                 setBorderLeft(shape.getBorderLeft());
                 setBorderRight(shape.getBorderRight());
                 setBorderTop(shape.getBorderTop());
                 setBorderBottom(shape.getBorderBottom());
-            }else {
+            } else {
                 setBorderLeft(Math.min(shape.getBorderLeft(), getBorderLeft()));
                 setBorderTop(Math.min(shape.getBorderTop(), getBorderTop()));
                 setBorderRight(Math.max(shape.getBorderRight(), getBorderRight()));
@@ -34,7 +34,15 @@ public class ShapeGroup extends Shape {
         }
     }
 
-    public void addShape(Shape shape){
+    @Override
+    public void move(int dx, int dy) {
+        for (Shape shape : shapes) {
+            shape.move(dx, dy);
+        }
+        updateBorder();
+    }
+
+    public void addShape(Shape shape) {
         shapes.add(shape);
         updateBorder();
     }

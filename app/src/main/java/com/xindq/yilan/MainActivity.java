@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         group=new ShapeGroup();
         group.addShape(group2);
         group.addShape(lineArrowShape);
+//        group.setShow(false);
 
         screenView.addShape(group);
         for (int i = 0; i < 40; i++) {
@@ -82,8 +83,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        Random random = new Random();
-        int a = Math.abs(random.nextInt());
+//        Random random = new Random();
+//        int a = Math.abs(random.nextInt());
 //        int a = Math.abs(random.nextInt()%5)+10;
 //        int a = random.nextInt()%200+200;
 //        shape.setLineWidth(20);
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        shape.setLineColor(a);
 
 //        Log.i(TAG, "onClick: LineColor"+shape.getLineColor());
-        Log.i(TAG, "onClick: "+a);
+//        Log.i(TAG, "onClick: "+a);
+        group.setTwinkle(!group.isTwinkle());
     }
 }

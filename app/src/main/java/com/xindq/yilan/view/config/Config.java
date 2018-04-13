@@ -21,8 +21,6 @@ public class Config {
      */
     public void startUp(Map<String, String> datas){
         boolean result = condition.result(datas);
-        if (result){
-            action.excute(datas);
-        }
+        action.excute(datas,result);
     }
 }

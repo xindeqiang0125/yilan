@@ -13,7 +13,7 @@ public class PolygonShape extends Shape {
     }
 
     public PolygonShape(List<Point> points) {
-        this.points=points;
+        this.points = points;
         updateBorder();
         updatePath();
     }
@@ -33,28 +33,29 @@ public class PolygonShape extends Shape {
     /**
      * 更新路径
      */
-    public void updatePath(){
+    public void updatePath() {
         path.reset();
         for (int i = 0; i < points.size(); i++) {
-            Point point=points.get(i);
-            if (i==0) path.moveTo(point.x, point.y);
+            Point point = points.get(i);
+            if (i == 0) path.moveTo(point.x, point.y);
             else path.lineTo(point.x, point.y);
         }
         path.close();
     }
+
     /**
      * 添加节点时调整边框
      */
     @Override
     public void updateBorder() {
         for (int i = 0; i < points.size(); i++) {
-            Point point=points.get(i);
-            if (i==0){
+            Point point = points.get(i);
+            if (i == 0) {
                 setBorderLeft(point.x);
                 setBorderTop(point.y);
                 setBorderRight(point.x);
                 setBorderBottom(point.y);
-            }else {
+            } else {
                 setBorderLeft(Math.min(point.x, getBorderLeft()));
                 setBorderTop(Math.min(point.y, getBorderTop()));
                 setBorderRight(Math.max(point.x, getBorderRight()));
@@ -64,18 +65,34 @@ public class PolygonShape extends Shape {
     }
 
     /**
-     * 修改某一点的坐标
-     * @param index 序号
-     * @param point 新点
+     * 移动
+     *
+     * @param dx
+     * @param dy
      */
-    public void updatePoint(int index,Point point){
-        Point p = points.get(index);
-        p.set(point.x,point.y);
+    @Override
+    public void move(int dx, int dy) {
+        for (Point point : points) {
+            point.set(point.x + dx, point.y + dy);
+        }
         updateBorder();
         updatePath();
     }
 
-    public Point getPoint(int index){
+    /**
+     * 修改某一点的坐标
+     *
+     * @param index 序号
+     * @param point 新点
+     */
+    public void updatePoint(int index, Point point) {
+        Point p = points.get(index);
+        p.set(point.x, point.y);
+        updateBorder();
+        updatePath();
+    }
+
+    public Point getPoint(int index) {
         return points.get(index);
     }
 

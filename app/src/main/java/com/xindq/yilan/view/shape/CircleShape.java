@@ -5,6 +5,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
 
+import com.xindq.yilan.view.config.Action;
+
 public class CircleShape extends Shape {
     /**
      * a,b,圆心
@@ -41,6 +43,35 @@ public class CircleShape extends Shape {
         setBorderRight(center.x + a);
         setBorderTop(center.y - b);
         setBorderBottom(center.y + b);
+    }
+
+    @Override
+    public void move(int dx, int dy) {
+        center.set(center.x+dx,center.y+dy);
+        updateBorder();
+    }
+
+    /**
+     * 对本shape执行动态效果
+     *
+     * @param type   动态效果类型，见Action中定义。
+     * @param value  实时值
+     * @param option 附加参数 见每种Shape中定义的常量（不是每种Shape都有）。
+     */
+    @Override
+    public void excuteAction(int type, Object value, int option) {
+        super.excuteAction(type, value, option);
+        switch (type){
+            case Action.A:
+                setA((int) value);
+                break;
+            case Action.B:
+                setB((int) value);
+                break;
+            case Action.RADIUS:
+                setRadius((int) value);
+                break;
+        }
     }
 
     //<editor-fold desc="getter and setter">

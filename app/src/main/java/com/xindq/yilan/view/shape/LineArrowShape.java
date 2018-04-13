@@ -26,6 +26,14 @@ public class LineArrowShape extends LineShape {
     }
 
     @Override
+    public void move(int dx, int dy) {
+        super.move(dx, dy);
+        p1.set(p1.x + dx, p1.y + dy);
+        p2.set(p2.x + dx, p2.y + dy);
+        p3.set(p3.x + dx, p3.y + dy);
+    }
+
+    @Override
     public void setLength(float length, int relative) {
         super.setLength(length, relative);
         initPath();
