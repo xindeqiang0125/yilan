@@ -20,7 +20,10 @@ public class Config {
      * @param datas
      */
     public void startUp(Map<String, String> datas){
-        boolean result = condition.result(datas);
+        boolean result=true;
+        if (condition != null) {
+            result = condition.result(datas);
+        }
         action.excute(datas,result);
     }
 }
