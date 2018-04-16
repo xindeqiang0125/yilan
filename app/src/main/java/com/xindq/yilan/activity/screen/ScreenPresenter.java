@@ -43,7 +43,6 @@ public class ScreenPresenter implements DataCallback{
      * 获取实时数据请求
      */
     public void requestdatas(Set<String> requestItems){
-        Log.i(TAG, "requestdatas: "+requestItems);
         //用websocket
 //        String serverURI = "ws://115.159.33.231:8181";
         String serverURI = "ws://115.159.33.231:8888/datas";
