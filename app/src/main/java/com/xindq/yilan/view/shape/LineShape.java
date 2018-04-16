@@ -62,19 +62,19 @@ public class LineShape extends Shape {
         super.excuteAction(type, value, option);
         switch (type){
             case Action.LENGTH:
-                setLength((float) value,option);
+                setLength((Float) value,option);
                 break;
             case Action.START_X:
-                setStart(new Point((int) value,getStart().y));
+                setStart(new Point(((Float) value).intValue(),getStart().y));
                 break;
             case Action.START_Y:
-                setStart(new Point(getStart().x,(int) value));
+                setStart(new Point(getStart().x,((Float) value).intValue()));
                 break;
             case Action.END_X:
-                setEnd(new Point((int) value,getEnd().y));
+                setEnd(new Point(((Float) value).intValue(),getEnd().y));
                 break;
             case Action.END_Y:
-                setEnd(new Point(getEnd().x,(int) value));
+                setEnd(new Point(getEnd().x,((Float) value).intValue()));
                 break;
         }
     }

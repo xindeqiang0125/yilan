@@ -4,10 +4,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.xindq.yilan.view.config.Action;
 
 public class CircleShape extends Shape {
+    private static final String TAG = "CircleShape";
     /**
      * a,b,圆心
      */
@@ -63,13 +65,13 @@ public class CircleShape extends Shape {
         super.excuteAction(type, value, option);
         switch (type){
             case Action.A:
-                setA((int) value);
+                setA(((Float) value).intValue());
                 break;
             case Action.B:
-                setB((int) value);
+                setB(((Float) value).intValue());
                 break;
             case Action.RADIUS:
-                setRadius((int) value);
+                setRadius(((Float) value).intValue());
                 break;
         }
     }

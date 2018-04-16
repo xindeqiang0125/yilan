@@ -76,6 +76,9 @@ public class TextShape extends Shape {
         super.excuteAction(type, value, option);
         switch (type){
             case Action.TEXTS:
+                if (!(value instanceof String[])){
+                    value=new String[]{value.toString()};
+                }
                 setTexts((String[]) value);
                 break;
             case Action.TEXT_COLOR:
@@ -85,7 +88,7 @@ public class TextShape extends Shape {
                 setBackgroundColor((Integer) value);
                 break;
             case Action.TEXT_SIZE:
-                setTextSize((Integer) value);
+                setTextSize(((Float) value).intValue());
                 break;
         }
     }

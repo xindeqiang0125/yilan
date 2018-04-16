@@ -32,7 +32,7 @@ public abstract class Shape {
     /**
      * 由于闪烁，记录之前的显示状态
      */
-    private boolean oldShow = true;
+    private Boolean oldShow;
 
     /**
      * Shape是否闪烁
@@ -51,6 +51,11 @@ public abstract class Shape {
      */
     private Paint paint = new Paint();
 
+    /**
+     * 执行闪烁的线程
+     */
+    private Thread twinkleThread;
+
     public Shape() {
         paint.setAntiAlias(true);
         paint.setDither(true);
@@ -68,7 +73,7 @@ public abstract class Shape {
             canvas.rotate(getDegree(), (getBorderLeft() + getBorderRight()) / 2, (getBorderTop() + getBorderBottom()) / 2);
             onDraw(canvas);
             canvas.restore();
-            drawBorder(canvas);
+//            drawBorder(canvas);
         }
     }
 
@@ -102,22 +107,22 @@ public abstract class Shape {
     public void excuteAction(int type,Object value,int option){
         switch (type){
             case Action.POSITION_X:
-                move((int)value-getBorderLeft(),0);
+                move(((Float) value).intValue()-getBorderLeft(),0);
                 break;
             case Action.POSITION_Y:
-                move(0, (int)value-getBorderTop());
+                move(0, ((Float) value).intValue()-getBorderTop());
                 break;
             case Action.RADIAN:
-                setRadian((float) value);
+                setRadian(((Float) value));
                 break;
             case Action.LINE_COLOR:
-                setLineColor((int) value);
+                setLineColor((Integer) value);
                 break;
             case Action.FILL_COLOR:
-                setFillColor((int) value);
+                setFillColor((Integer) value);
                 break;
             case Action.LINE_WIDTH:
-                setLineWidth((int) value);
+                setLineWidth(((Float) value).intValue());
                 break;
         }
     }
@@ -194,13 +199,16 @@ public abstract class Shape {
     public void setTwinkle(boolean twinkle) {
         this.twinkle = twinkle;
         if (twinkle){
-            oldShow=isShow();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    enableTwinkle();
-                }
-            }).start();
+            if (oldShow==null) oldShow=isShow();
+            if (twinkleThread == null) {
+                twinkleThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        enableTwinkle();
+                    }
+                });
+                twinkleThread.start();
+            }
         }
     }
 
@@ -216,6 +224,7 @@ public abstract class Shape {
             }
             this.setShow(!isShow());
         }
+        twinkleThread=null;
         setShow(oldShow);
     }
 

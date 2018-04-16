@@ -49,10 +49,10 @@ public class RectangleShape extends PolygonShape {
         super.excuteAction(type, value, option);
         switch (type){
             case Action.WIDTH:
-                setWidth((float) value,option);
+                setWidth(((Float) value),option);
                 break;
             case Action.HEIGHT:
-                setHeight((float) value,option);
+                setHeight(((Float) value),option);
                 break;
         }
     }

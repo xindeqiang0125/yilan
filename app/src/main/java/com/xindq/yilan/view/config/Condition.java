@@ -14,6 +14,7 @@ public class Condition {
     private List<String> items = new ArrayList<>();
 
     public Condition(String condition) {
+        condition = condition.toLowerCase();
         condition = condition.replace(" ", "");
         condition = condition.replace("and", "&");
         condition = condition.replace("or", "|");

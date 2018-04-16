@@ -43,7 +43,9 @@ public class ScreenPresenter implements DataCallback{
      * 获取实时数据请求
      */
     public void requestdatas(Set<String> requestItems){
+        Log.i(TAG, "requestdatas: "+requestItems);
         //用websocket
+//        String serverURI = "ws://115.159.33.231:8181";
         String serverURI = "ws://115.159.33.231:8888/datas";
         DatasClient client=new DatasClient(serverURI,requestItems);
         client.setCallback(this);
@@ -84,15 +86,9 @@ public class ScreenPresenter implements DataCallback{
                 List<Shape> shapeList = fileDecoder.decodeShapes();
                 List<Config> configs = fileDecoder.decodeConfigs();
                 if (callback != null) {
-                    callback.onDecode(shapeList,null);
+                    callback.onDecode(shapeList,configs);
                 }
             }
         });
     }
-
-    private List<Config> decodeConfigs(JSONArray configs) {
-        return null;
-    }
-
-
 }

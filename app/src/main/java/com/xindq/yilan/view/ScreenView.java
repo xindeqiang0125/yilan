@@ -31,7 +31,7 @@ public class ScreenView extends View implements OnRepaint {
     private Timer timer = new Timer();
 
     public ScreenView(Context context) {
-        this(context, null);
+        super(context);
     }
 
     public ScreenView(Context context, @Nullable AttributeSet attrs) {
@@ -41,13 +41,8 @@ public class ScreenView extends View implements OnRepaint {
     public ScreenView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.ScreenView);
-        this.refreshTime = ta.getInteger(R.styleable.ScreenView_refreshTime, 50);
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                ScreenView.this.repaint();
-            }
-        }, 1000, this.refreshTime);
+        int time = ta.getInteger(R.styleable.ScreenView_refreshTime, 50);
+        setRefreshTime(time);
     }
 
     @Override
@@ -119,7 +114,7 @@ public class ScreenView extends View implements OnRepaint {
             shape.draw(canvas);
         }
         long e = System.currentTimeMillis();
-        Log.i(TAG, "onDraw: time:"+(e-s));
+//        Log.i(TAG, "onDraw: time:"+(e-s));
     }
 
     /**
@@ -138,5 +133,15 @@ public class ScreenView extends View implements OnRepaint {
             this.invalidate();
         });
 //        Log.i(TAG, "repaint: ");
+    }
+
+    public void setRefreshTime(int refreshTime) {
+        this.refreshTime = refreshTime;
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ScreenView.this.repaint();
+            }
+        }, 1000, this.refreshTime);
     }
 }

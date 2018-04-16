@@ -7,6 +7,7 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.xindq.yilan.util.ColorUtil;
 import com.xindq.yilan.view.config.Action;
 import com.xindq.yilan.view.config.Condition;
 import com.xindq.yilan.view.config.Config;
@@ -46,7 +47,7 @@ class FileDecoder {
     public List<Config> decodeConfigs() {
         List<Config> list=new ArrayList<>();
         for (int i = 0; i < configs.size(); i++) {
-            Log.i(TAG, "decodeConfigs: "+configs.get(i));
+//            Log.i(TAG, "decodeConfigs: "+configs.get(i));
             JSONObject configJson = configs.getJSONObject(i);
             //shapeId,用于构建Config的参数
             Integer shapeId = configJson.getInteger("shapeId");
@@ -54,30 +55,28 @@ class FileDecoder {
             String detail = configJson.getString("detail");
             //wheres[0]:action;wheres[0]:condition
             String[] wheres = detail.split("where");
-            for (int j = 0; j < wheres.length; j++) {
-                wheres[i]=wheres[i].trim();
-            }
-
             //condition,用于构建Config的参数
             Condition condition;
             if (wheres.length>1){
-                condition=decodeCondition(wheres[1]);
+                condition=decodeCondition(wheres[1].trim());
             }else {
                 condition=null;
             }
             //action,用于构建Config的参数
-            Action action=decodeAction(wheres[0]);
+            Action action=decodeAction(wheres[0].trim(),shapeMap.get(shapeId));
 
+            list.add(new Config(condition,action));
         }
         return list;
     }
 
-    private Action decodeAction(String s) {
-        return null;
+    private Action decodeAction(String s,Shape shape) {
+        Action action=new Action(shape,s);
+        return action;
     }
 
     private Condition decodeCondition(String s) {
-        return null;
+        return new Condition(s);
     }
 
     /**
@@ -164,7 +163,7 @@ class FileDecoder {
         }
         LineArrowShape shape=new LineArrowShape(p[0],p[1]);
         shape.setLineWidth(shapeJson.getInteger("lineWidth"));
-        shape.setLineColor(parseColor(shapeJson.getString("lineColor")));
+        shape.setLineColor(ColorUtil.parseColor(shapeJson.getString("lineColor")));
         return shape;
     }
 
@@ -179,15 +178,15 @@ class FileDecoder {
         }
         LineShape shape=new LineShape(p[0],p[1]);
         shape.setLineWidth(shapeJson.getInteger("lineWidth"));
-        shape.setLineColor(parseColor(shapeJson.getString("lineColor")));
+        shape.setLineColor(ColorUtil.parseColor(shapeJson.getString("lineColor")));
         return shape;
     }
 
     private Shape decodeText(JSONObject shapeJson) {
         JSONArray text = shapeJson.getJSONArray("text");
         TextShape shape=new TextShape(text.toArray(new String[1]));
-        shape.setBackgroundColor(parseColor(shapeJson.getString("backgroundColor")));
-        shape.setTextColor(parseColor(shapeJson.getString("fontColor")));
+        shape.setBackgroundColor(ColorUtil.parseColor(shapeJson.getString("backgroundColor")));
+        shape.setTextColor(ColorUtil.parseColor(shapeJson.getString("fontColor")));
         shape.setTextSize(shapeJson.getInteger("fontSize"));
         shape.setPosition(shapeJson.getInteger("startX"),
                 shapeJson.getInteger("startY"));
@@ -212,8 +211,8 @@ class FileDecoder {
                 pointList.get(0).x-pointList.get(2).x);
         CircleShape shape=new CircleShape(a,b,center,radian);
         shape.setLineWidth(shapeJson.getInteger("lineWidth"));
-        shape.setLineColor(parseColor(shapeJson.getString("lineColor")));
-        shape.setFillColor(parseColor(shapeJson.getString("fillColor")));
+        shape.setLineColor(ColorUtil.parseColor(shapeJson.getString("lineColor")));
+        shape.setFillColor(ColorUtil.parseColor(shapeJson.getString("fillColor")));
         return shape;
     }
 
@@ -229,8 +228,8 @@ class FileDecoder {
         }
         PolygonShape shape=new PolygonShape(list);
         shape.setLineWidth(shapeJson.getInteger("lineWidth"));
-        shape.setLineColor(parseColor(shapeJson.getString("lineColor")));
-        shape.setFillColor(parseColor(shapeJson.getString("fillColor")));
+        shape.setLineColor(ColorUtil.parseColor(shapeJson.getString("lineColor")));
+        shape.setFillColor(ColorUtil.parseColor(shapeJson.getString("fillColor")));
         return shape;
     }
 
@@ -246,24 +245,9 @@ class FileDecoder {
         }
         RectangleShape shape=new RectangleShape(list);
         shape.setLineWidth(shapeJson.getInteger("lineWidth"));
-        shape.setLineColor(parseColor(shapeJson.getString("lineColor")));
-        shape.setFillColor(parseColor(shapeJson.getString("fillColor")));
+        shape.setLineColor(ColorUtil.parseColor(shapeJson.getString("lineColor")));
+        shape.setFillColor(ColorUtil.parseColor(shapeJson.getString("fillColor")));
         return shape;
-    }
-
-    private int parseColor(String color){
-        if (color.contains("rgba")){
-            color=color.substring(color.indexOf('(')+1,color.indexOf(')'));
-            String[] split = color.split(",");
-            int a= (int) (Float.parseFloat(split[0])*255);
-            int r=Integer.parseInt(split[1]);
-            int g=Integer.parseInt(split[2]);
-            int b=Integer.parseInt(split[3]);
-            return Color.argb(a,r,g,b);
-        }else if (color.contains("#")){
-            return Color.parseColor(color.replace("#","#ff"));
-        }
-        return 0;
     }
     //</editor-fold>
 }

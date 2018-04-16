@@ -1,5 +1,7 @@
 package com.xindq.yilan.activity.screen;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 
@@ -18,6 +20,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class DatasClient extends WebSocketClient{
+    private static final String TAG = "DatasClient";
+
     private Set<String> requestItems;
     private DataCallback callback;
 
@@ -50,9 +54,12 @@ public class DatasClient extends WebSocketClient{
 
     @Override
     public void onMessage(String message) {
-        Map<String,String> datas=null;
-        datas=JSON.parseObject(message,new TypeReference<Map<String,String>>(){});
-        System.out.println(datas);
+        Map<String,String> datas=new HashMap<>();
+        try {
+            datas=JSON.parseObject(message,new TypeReference<Map<String,String>>(){});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (callback != null) {
             callback.onReceiveDatas(datas);
         }
@@ -60,7 +67,7 @@ public class DatasClient extends WebSocketClient{
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-
+        this.send("?");
     }
 
     @Override

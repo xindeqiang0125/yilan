@@ -1,16 +1,14 @@
 package com.xindq.yilan.view.config;
 
-import com.xindq.yilan.view.shape.Shape;
-
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Config {
-    private Shape shape;
     private Condition condition;
     private Action action;
 
-    public Config(Shape shape, Condition condition, Action action) {
-        this.shape = shape;
+    public Config(Condition condition, Action action) {
         this.condition = condition;
         this.action = action;
     }
@@ -25,5 +23,21 @@ public class Config {
             result = condition.result(datas);
         }
         action.excute(datas,result);
+    }
+
+    /**
+     * 获取本组态所有需要的测点名
+     * @return
+     */
+    public Set<String> getRequestItems(){
+        Set<String> set=new HashSet<>();
+        if (condition != null) {
+            set.addAll(condition.getItems());
+        }
+        String item = action.getItem();
+        if (item != null) {
+            set.add(item);
+        }
+        return set;
     }
 }
