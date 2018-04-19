@@ -31,7 +31,9 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback{
 
         screenContainer = findViewById(R.id.screen_container);
         presenter=new ScreenPresenter(this);
-        presenter.requestShapesAndConfigs();
+//        String url="http://115.159.33.231:8888/files/"+2+"/content";
+        String url="http://115.159.33.231:8888/files/"+getIntent().getIntExtra("fileId",1)+"/content";
+        presenter.requestShapesAndConfigs(url);
     }
 
     /**

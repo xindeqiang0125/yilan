@@ -65,8 +65,7 @@ public class ScreenPresenter implements DataCallback{
     /**
      * 获取Shapes和Configs
      */
-    public void requestShapesAndConfigs(){
-        String url="http://115.159.33.231:8888/files/2/content";
+    public void requestShapesAndConfigs(String url){
         OkHttpClient client=new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
