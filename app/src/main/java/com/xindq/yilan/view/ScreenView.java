@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.xindq.yilan.R;
@@ -27,7 +28,8 @@ public class ScreenView extends View implements OnRepaint {
     private static final String TAG = "ScreenView";
 
     private int refreshTime;
-    List<Shape> shapes = new ArrayList<>();
+    private List<Shape> shapes = new ArrayList<>();
+    private OnLongClickShape onLongClickShape;
     private Timer timer = new Timer();
 
     public ScreenView(Context context) {
@@ -51,21 +53,21 @@ public class ScreenView extends View implements OnRepaint {
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        int width , height;
-        if (widthMode == MeasureSpec.EXACTLY){
+        int width, height;
+        if (widthMode == MeasureSpec.EXACTLY) {
             width = widthSize;
-        }else {
+        } else {
             width = getShapesRight() + getShapesLeft();
-            if (widthMode == MeasureSpec.AT_MOST){
-                width=Math.min(width,widthSize);
+            if (widthMode == MeasureSpec.AT_MOST) {
+                width = Math.min(width, widthSize);
             }
         }
-        if (heightMode == MeasureSpec.EXACTLY){
+        if (heightMode == MeasureSpec.EXACTLY) {
             height = heightSize;
-        }else {
+        } else {
             height = getShapesTop() + getShapesBottom();
-            if (heightMode == MeasureSpec.AT_MOST){
-                height=Math.min(height,heightSize);
+            if (heightMode == MeasureSpec.AT_MOST) {
+                height = Math.min(height, heightSize);
             }
         }
         setMeasuredDimension(width, height);
@@ -107,6 +109,10 @@ public class ScreenView extends View implements OnRepaint {
         return value;
     }
 
+    public void setOnLongClickShape(OnLongClickShape onLongClickShape) {
+        this.onLongClickShape = onLongClickShape;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         long s = System.currentTimeMillis();
@@ -144,4 +150,54 @@ public class ScreenView extends View implements OnRepaint {
             }
         }, 1000, this.refreshTime);
     }
+
+    private int downX = 0, downY = 0, upX = 0, upY = 0;
+    private long downTime = 0, upTime = 0;
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                downX = (int) event.getX();
+                downY = (int) event.getY();
+                downTime = event.getEventTime();
+                break;
+            case MotionEvent.ACTION_UP:
+                upX = (int) event.getX();
+                upY = (int) event.getY();
+                upTime = event.getEventTime();
+                if (Math.abs(downX - upX) < 10 && Math.abs(downY - upY) < 10
+                        && upTime - downTime > 1000) {
+                    onLongClick(upX, upY);
+                }
+                break;
+        }
+        return true;
+    }
+
+    private void onLongClick(int x, int y) {
+        Shape shape = getLongClickedShape(x, y);
+        if (onLongClickShape != null && shape != null) {
+            onLongClickShape.onLongClickShape(shape);
+        }
+    }
+
+    private Shape getLongClickedShape(int x, int y) {
+        for (int i = shapes.size() - 1; i >= 0; i--) {
+            Shape shape = shapes.get(i);
+            if (shape.getBorderLeft() < x && shape.getBorderRight() > x &&
+                    shape.getBorderTop() < y && shape.getBorderBottom() > y) {
+                return shape;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * 点击图形回调接口
+     */
+    public interface OnLongClickShape {
+        void onLongClickShape(Shape shape);
+    }
+
 }

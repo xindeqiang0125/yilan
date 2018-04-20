@@ -1,6 +1,7 @@
 package com.xindq.yilan.activity.screen;
 
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ScreenActivity extends AppCompatActivity implements ScreenCallback{
+public class ScreenActivity extends AppCompatActivity implements ScreenCallback, ScreenView.OnLongClickShape {
     private static final String TAG = "ScreenActivity";
     private List<Config> configs;
     private ScreenPresenter presenter;
@@ -61,6 +62,8 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback{
                 for (Shape shape : shapes) {
                     screenView.addShape(shape);
                 }
+                //添加点击形状的事件回调
+                screenView.setOnLongClickShape(ScreenActivity.this);
                 //将screenView加入screenContainer
                 screenContainer.addView(screenView, params);
                 ScreenActivity.this.configs=configs;
@@ -87,5 +90,14 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback{
         }
 //        long e=System.currentTimeMillis();
 //        Log.i(TAG, "onReceiveDatas: "+(e-s));
+    }
+
+    @Override
+    public void onLongClickShape(Shape shape) {
+        Log.i(TAG, "onLongClickShape: "+shape.getBorderTop());
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setView(R.layout.shape_item_info);
+        builder.setPositiveButton("确认",null);
+        builder.show();
     }
 }
