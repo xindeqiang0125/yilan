@@ -32,7 +32,7 @@ public class ListActivity extends AppCompatActivity implements OnReceiveDataLise
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         fileList.setLayoutManager(layoutManager);
 
-        ListPresenter presenter = new ListPresenter(this);
+        ListPresenter presenter = new ListPresenter(this,this);
         presenter.requestFiles();
     }
 

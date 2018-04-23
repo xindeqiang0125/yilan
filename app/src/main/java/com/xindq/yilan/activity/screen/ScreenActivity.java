@@ -31,10 +31,15 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
         setContentView(R.layout.activity_screen);
 
         screenContainer = findViewById(R.id.screen_container);
-        presenter=new ScreenPresenter(this);
+        presenter=new ScreenPresenter(this,this);
 //        String url="http://115.159.33.231:8888/files/"+2+"/content";
-        String url="http://115.159.33.231:8888/files/"+getIntent().getIntExtra("fileId",1)+"/content";
+        String url=getString(R.string.file_content_url)+getIntent().getIntExtra("fileId",1)+"/content";
         presenter.requestShapesAndConfigs(url);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     /**
@@ -82,19 +87,13 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
      */
     @Override
     public void onReceiveDatas(Map<String, String> datas) {
-//        Log.i(TAG, "onReceiveDatas: "+datas);
-//        long s=System.currentTimeMillis();
-
         for (Config config : configs) {
             config.startUp(datas);
         }
-//        long e=System.currentTimeMillis();
-//        Log.i(TAG, "onReceiveDatas: "+(e-s));
     }
 
     @Override
     public void onLongClickShape(Shape shape) {
-        Log.i(TAG, "onLongClickShape: "+shape.getBorderTop());
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setView(R.layout.shape_item_info);
         builder.setPositiveButton("确认",null);

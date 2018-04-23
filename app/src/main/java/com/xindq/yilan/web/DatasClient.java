@@ -1,9 +1,10 @@
-package com.xindq.yilan.activity.screen;
+package com.xindq.yilan.web;
 
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.xindq.yilan.activity.screen.DataCallback;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
