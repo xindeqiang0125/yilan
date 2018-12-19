@@ -44,6 +44,10 @@ public class Config {
         return set;
     }
 
+    /**
+     * 获取Condition绑定的测点
+     * @return
+     */
     public Set<String> getConditionItems(){
         if (condition != null) {
             return new HashSet<>(condition.getItems());
@@ -51,6 +55,10 @@ public class Config {
         return new HashSet<>();
     }
 
+    /**
+     * 获取Action绑定的测点
+     * @return
+     */
     public String getActionItem(){
         if (action != null) {
             return action.getItem();
@@ -58,7 +66,20 @@ public class Config {
         return null;
     }
 
+    /**
+     * 获取测点的值
+     * @param item
+     * @return
+     */
     public String getItemValue(String item){
         return datas.get(item);
+    }
+
+    public Condition getCondition() {
+        return condition;
+    }
+
+    public Action getAction() {
+        return action;
     }
 }

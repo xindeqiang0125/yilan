@@ -351,4 +351,8 @@ public class Action {
     public String getItem() {
         return item;
     }
+
+    public Shape getShape() {
+        return shape;
+    }
 }

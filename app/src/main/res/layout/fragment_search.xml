@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <SearchView
+        android:id="@+id/item_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:searchIcon="@drawable/search_32"
+        android:inputType="text"
+        android:queryHint="请输入测点名称搜索测点"
+        android:iconifiedByDefault="false"
+        android:background="@drawable/content_editor_border">
+
+    </SearchView>
+
+    <ListView
+        android:id="@+id/lv_item"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:dividerHeight="3pt">
+
+    </ListView>
+</LinearLayout>

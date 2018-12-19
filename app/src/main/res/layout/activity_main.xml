@@ -1,22 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+    android:orientation="vertical">
 
-            <com.xindq.yilan.view.ScreenView
-                android:id="@+id/scrollView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:layout_margin="10dp"
-                app:refreshTime="100"/>
-        </LinearLayout>
-    </HorizontalScrollView>
-</ScrollView>
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </FrameLayout>
+
+    <RadioGroup
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/btn_file_list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/tab_list_icon"
+            android:gravity="center"
+            android:text="浏览"
+            android:textColor="@color/tab_list_color"
+            android:textSize="10sp" />
+
+        <RadioButton
+            android:id="@+id/btn_history"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/tab_search_icon"
+            android:gravity="center"
+            android:text="搜索"
+            android:textColor="@color/tab_list_color"
+            android:textSize="10sp" />
+        <RadioButton
+            android:id="@+id/btn_setting"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/tab_setting_icon"
+            android:gravity="center"
+            android:text="设置"
+            android:textColor="@color/tab_list_color"
+            android:textSize="10sp" />
+    </RadioGroup>
+</LinearLayout>

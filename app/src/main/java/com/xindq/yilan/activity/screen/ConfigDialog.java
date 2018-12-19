@@ -10,11 +10,14 @@ import android.widget.Spinner;
 
 import com.xindq.yilan.R;
 
+import java.util.Map;
+
 public class ConfigDialog {
     private Context context;
     private AlertDialog.Builder builder;
 
     private Spinner spinner;
+    private AlertDialog dialog;
 
     public ConfigDialog(Context context) {
         this.context = context;
@@ -36,9 +39,24 @@ public class ConfigDialog {
 
             }
         });
+
+        builder.setView(view);
+        dialog = builder.create();
+    }
+
+    public void setDatas(Map<String, String> datas){
+
     }
 
     public void show(){
-        builder.show();
+        dialog.show();
+    }
+
+    public void close(){
+        dialog.cancel();
+    }
+
+    public Spinner getSpinner() {
+        return spinner;
     }
 }

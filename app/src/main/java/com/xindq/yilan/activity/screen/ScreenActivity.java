@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import com.xindq.yilan.R;
@@ -14,6 +15,7 @@ import com.xindq.yilan.view.ScreenView;
 import com.xindq.yilan.view.config.Config;
 import com.xindq.yilan.view.shape.Shape;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,7 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
     private List<Config> configs;
     private ScreenPresenter presenter;
     private LinearLayout screenContainer;
+    private ConfigDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,13 +93,36 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
         for (Config config : configs) {
             config.startUp(datas);
         }
+
+        //同时向对话框传datas
     }
 
     @Override
     public void onLongClickShape(Shape shape) {
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        builder.setView(R.layout.shape_item_info);
-        builder.setPositiveButton("确认",null);
-        builder.show();
+        List<Config> configsByShape = getConfigsByShape(shape);
+        Set<String> items=new HashSet<>();
+        for (Config config : configsByShape) {
+            items.addAll(config.getRequestItems());
+        }
+
+        if (dialog == null) {
+            dialog=new ConfigDialog(this);
+        }
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item,new ArrayList<>(items));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        dialog.getSpinner().setAdapter(adapter);
+        dialog.show();
+    }
+
+    private List<Config> getConfigsByShape(Shape shape){
+        List<Config> c=new ArrayList<>();
+        for (Config config : configs) {
+            if (config.getAction().getShape()==shape) {
+                c.add(config);
+            }
+        }
+        return c;
     }
 }
