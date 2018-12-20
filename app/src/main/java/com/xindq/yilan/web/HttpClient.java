@@ -8,6 +8,9 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 import okio.BufferedSink;
 
@@ -30,6 +33,7 @@ public class HttpClient {
             }
         }
         return instance;
+//        return new HttpClient();
     }
 
     public void get(String url,OnHttpResponse onHttpResponse){

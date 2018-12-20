@@ -1,4 +1,4 @@
-package com.xindq.yilan.fragment.search;
+package com.xindq.yilan.fragment.filelist;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,27 +8,28 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.xindq.yilan.R;
+import com.xindq.yilan.domain.FileDetail;
 import com.xindq.yilan.domain.Item;
 
 import java.util.List;
 
-public class ItemListViewAdapter extends BaseAdapter {
+public class FileListViewAdapter extends BaseAdapter {
     private Context context;
-    private List<Item> items;
+    private List<FileDetail> files;
 
-    public ItemListViewAdapter(Context context, List<Item> items) {
+    public FileListViewAdapter(Context context, List<FileDetail> files) {
         this.context = context;
-        this.items = items;
+        this.files = files;
     }
 
     @Override
     public int getCount() {
-        return items.size();
+        return files.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return items.get(position);
+        return files.get(position);
     }
 
     @Override
@@ -40,21 +41,19 @@ public class ItemListViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_list, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.file_list, parent, false);
             holder = new ViewHolder();
-            holder.idView = convertView.findViewById(R.id.item_list_id);
-            holder.nameView = convertView.findViewById(R.id.item_list_name);
-            holder.notesView = convertView.findViewById(R.id.item_list_notes);
-            holder.groupView = convertView.findViewById(R.id.item_list_group);
+            holder.idView = convertView.findViewById(R.id.file_list_id);
+            holder.nameView = convertView.findViewById(R.id.file_list_name);
+            holder.notesView = convertView.findViewById(R.id.file_list_notes);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        Item item = items.get(position);
-        holder.idView.setText(""+item.getId());
-        holder.nameView.setText(item.getItemName());
-        holder.notesView.setText(item.getNotes());
-        holder.groupView.setText(item.getGroup());
+        FileDetail file = files.get(position);
+        holder.idView.setText(""+file.getId());
+        holder.nameView.setText(file.getName());
+        holder.notesView.setText(file.getDetail());
         return convertView;
     }
 
@@ -62,6 +61,5 @@ public class ItemListViewAdapter extends BaseAdapter {
         TextView idView;
         TextView nameView;
         TextView notesView;
-        TextView groupView;
     }
 }

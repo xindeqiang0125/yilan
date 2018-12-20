@@ -9,4 +9,28 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="dialog_content_key">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textColor">#2222FF</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="dialog_content_value">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textColor">#EF214A</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="dialog_content_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
 </resources>

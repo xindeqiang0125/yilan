@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_dialog"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="测点"
+        android:textColor="@color/colorBlack"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dialog_item_id"
+            style="@style/dialog_content_value"
+            android:visibility="gone" />
+
+        <LinearLayout style="@style/dialog_content_container">
+
+            <TextView
+                style="@style/dialog_content_key"
+                android:text="测点名" />
+
+            <TextView
+                android:id="@+id/dialog_item_name"
+                style="@style/dialog_content_value" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/dialog_content_container">
+
+            <TextView
+                style="@style/dialog_content_key"
+                android:text="类型" />
+
+            <TextView
+                android:id="@+id/dialog_item_type"
+                style="@style/dialog_content_value" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/dialog_content_container">
+
+            <TextView
+                style="@style/dialog_content_key"
+                android:text="详细信息" />
+
+            <TextView
+                android:id="@+id/dialog_item_notes"
+                style="@style/dialog_content_value" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/dialog_content_container">
+
+            <TextView
+                style="@style/dialog_content_key"
+                android:text="所属组名" />
+
+            <TextView
+                android:id="@+id/dialog_item_group"
+                style="@style/dialog_content_value" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/dialog_content_container">
+
+            <TextView
+                style="@style/dialog_content_key"
+                android:text="单位" />
+
+            <TextView
+                android:id="@+id/dialog_item_unit"
+                style="@style/dialog_content_value" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/dialog_content_container">
+
+            <TextView
+                style="@style/dialog_content_key"
+                android:text="下限" />
+
+            <TextView
+                android:id="@+id/dialog_item_min"
+                style="@style/dialog_content_value" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/dialog_content_container">
+
+            <TextView
+                style="@style/dialog_content_key"
+                android:text="上限" />
+
+            <TextView
+                android:id="@+id/dialog_item_max"
+                style="@style/dialog_content_value" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/dialog_content_container">
+
+            <TextView
+                style="@style/dialog_content_key"
+                android:text="正常值" />
+
+            <TextView
+                android:id="@+id/dialog_item_normal"
+                style="@style/dialog_content_value" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/colorPrimaryDark" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dialog_cancle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="#BE0E0E"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#CCCCCC" />
+
+        <TextView
+            android:id="@+id/dialog_confirm"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="历史"
+            android:textColor="#183ED7"
+            android:textSize="20sp" />
+    </LinearLayout>
+</LinearLayout>
