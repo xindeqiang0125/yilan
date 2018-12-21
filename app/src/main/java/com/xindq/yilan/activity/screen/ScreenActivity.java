@@ -11,6 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import com.xindq.yilan.R;
+import com.xindq.yilan.dialog.ItemDialog;
+import com.xindq.yilan.dialog.ItemDialogBtnListener;
+import com.xindq.yilan.domain.Item;
+import com.xindq.yilan.util.ToastUtil;
 import com.xindq.yilan.view.ScreenView;
 import com.xindq.yilan.view.config.Config;
 import com.xindq.yilan.view.shape.Shape;
@@ -26,7 +30,7 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
     private List<Config> configs;
     private ScreenPresenter presenter;
     private LinearLayout screenContainer;
-    private ConfigDialog dialog;
+    private ItemDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,12 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.closeDatasConnection();
     }
 
     /**
@@ -61,10 +71,9 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
                 //LayoutParams，并初始化
                 LinearLayout.LayoutParams params =
                         new LinearLayout.LayoutParams(
-                                1280,
-                                720);
-                params.setMargins(20,20,20,20);
-
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(10,10,10,10);
                 //将获取的图形加入screenView
                 for (Shape shape : shapes) {
                     screenView.addShape(shape);
@@ -92,27 +101,30 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
         for (Config config : configs) {
             config.startUp(datas);
         }
+    }
 
-        //同时向对话框传datas
+    @Override
+    public void onGetItem(Item item) {
+        Log.i(TAG, "onGetItem: "+item);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog = new ItemDialog(ScreenActivity.this);
+                dialog.setItem(item)
+                        .setOnClickBtnListener(new ItemDialogBtnListener(ScreenActivity.this,dialog))
+                        .show();
+            }
+        });
     }
 
     @Override
     public void onLongClickShape(Shape shape) {
         List<Config> configsByShape = getConfigsByShape(shape);
-        Set<String> items=new HashSet<>();
+
         for (Config config : configsByShape) {
-            items.addAll(config.getRequestItems());
+            presenter.requestItem(Integer.parseInt(config.getActionItem()));
         }
 
-        if (dialog == null) {
-            dialog=new ConfigDialog(this);
-        }
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item,new ArrayList<>(items));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        dialog.getSpinner().setAdapter(adapter);
-        dialog.show();
     }
 
     private List<Config> getConfigsByShape(Shape shape){

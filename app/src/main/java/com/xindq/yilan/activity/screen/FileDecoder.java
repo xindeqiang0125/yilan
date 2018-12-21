@@ -117,8 +117,10 @@ class FileDecoder {
                     shape = decodeGroup(shapeJson);
                     break;
             }
+            Integer id = shapeJson.getInteger("id");
+            shape.setId(id);
             list.add(shape);
-            shapeMap.put(shapeJson.getInteger("id"), shape);
+            shapeMap.put(id, shape);
         }
         return list;
     }

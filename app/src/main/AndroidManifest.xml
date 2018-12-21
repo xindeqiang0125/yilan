@@ -23,11 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.screen.ScreenActivity" />
+        <activity
+            android:name=".activity.screen.ScreenActivity"
+            android:screenOrientation="landscape" />
         <activity android:name=".activity.login.LoginActivity" />
         <activity
             android:name=".activity.history.HistoryActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

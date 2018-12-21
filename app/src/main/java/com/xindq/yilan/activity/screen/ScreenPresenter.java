@@ -2,11 +2,14 @@ package com.xindq.yilan.activity.screen;
 
 import android.content.Context;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.xindq.yilan.R;
+import com.xindq.yilan.domain.Item;
 import com.xindq.yilan.view.config.Config;
 import com.xindq.yilan.view.shape.Shape;
 import com.xindq.yilan.web.DatasClient;
@@ -22,6 +25,7 @@ public class ScreenPresenter implements DataCallback {
 
     private ScreenCallback callback;
     private Context context;
+    private DatasClient client;
 
     public ScreenPresenter(Context context, ScreenCallback callback) {
         this.callback = callback;
@@ -33,9 +37,13 @@ public class ScreenPresenter implements DataCallback {
      */
     public void requestdatas(Set<String> requestItems) {
         String serverURI = context.getString(R.string.real_data_url);
-        DatasClient client = new DatasClient(serverURI, requestItems);
+        client = new DatasClient(serverURI, requestItems);
         client.setCallback(this);
         client.connect();
+    }
+
+    public void closeDatasConnection(){
+        client.close();
     }
 
     /**
@@ -64,6 +72,22 @@ public class ScreenPresenter implements DataCallback {
                 List<Config> configs = fileDecoder.decodeConfigs();
                 if (callback != null) {
                     callback.onDecode(shapeList, configs);
+                }
+            }
+        });
+    }
+
+    public void requestItem(int itemId){
+        String url = context.getString(R.string.get_item_url) + "?itemId=" + itemId;
+        HttpClient.getInstance().get(url, new HttpClient.OnHttpResponse() {
+            @Override
+            public void onHttpResponse(String reponse) {
+                Item item = JSON.parseObject(reponse, Item.class);
+                JSONObject jsonObject = JSON.parseObject(item.getGroup());
+                String groupName = jsonObject.getString("groupName");
+                item.setGroup(groupName);
+                if (callback != null) {
+                    callback.onGetItem(item);
                 }
             }
         });
