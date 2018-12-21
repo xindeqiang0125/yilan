@@ -49,7 +49,7 @@ public class CircleShape extends Shape {
 
     @Override
     public void move(int dx, int dy) {
-        center.set(center.x+dx,center.y+dy);
+        center.set(center.x + dx, center.y + dy);
         updateBorder();
     }
 
@@ -63,7 +63,7 @@ public class CircleShape extends Shape {
     @Override
     public void excuteAction(int type, Object value, int option) {
         super.excuteAction(type, value, option);
-        switch (type){
+        switch (type) {
             case Action.A:
                 setA(((Float) value).intValue());
                 break;
@@ -72,6 +72,9 @@ public class CircleShape extends Shape {
                 break;
             case Action.RADIUS:
                 setRadius(((Float) value).intValue());
+                break;
+            case Action.ANGLE:
+                setRadian((float) (((Float) value) / 180 * Math.PI));
                 break;
         }
     }

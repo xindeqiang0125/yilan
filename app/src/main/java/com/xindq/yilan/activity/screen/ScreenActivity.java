@@ -35,9 +35,8 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
 
         screenContainer = findViewById(R.id.screen_container);
         presenter=new ScreenPresenter(this,this);
-//        String url="http://115.159.33.231:8888/files/"+2+"/content";
-        String url=getString(R.string.file_content_url)+getIntent().getIntExtra("fileId",1)+"/content";
-        presenter.requestShapesAndConfigs(url);
+        int fileId = getIntent().getIntExtra("fileId", 1);
+        presenter.requestShapesAndConfigs(fileId);
     }
 
     @Override
@@ -62,8 +61,8 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
                 //LayoutParams，并初始化
                 LinearLayout.LayoutParams params =
                         new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.WRAP_CONTENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                                1280,
+                                720);
                 params.setMargins(20,20,20,20);
 
                 //将获取的图形加入screenView

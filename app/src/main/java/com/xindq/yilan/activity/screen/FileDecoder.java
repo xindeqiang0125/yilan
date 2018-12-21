@@ -12,6 +12,7 @@ import com.xindq.yilan.view.config.Action;
 import com.xindq.yilan.view.config.Condition;
 import com.xindq.yilan.view.config.Config;
 import com.xindq.yilan.view.shape.CircleShape;
+import com.xindq.yilan.view.shape.ImageShape;
 import com.xindq.yilan.view.shape.LineArrowShape;
 import com.xindq.yilan.view.shape.LineShape;
 import com.xindq.yilan.view.shape.PolygonShape;
@@ -28,7 +29,7 @@ import java.util.Map;
 class FileDecoder {
     private static final String TAG = "FileDecoder";
 
-    private Map<Integer,Shape> shapeMap=new HashMap<>();
+    private Map<Integer, Shape> shapeMap = new HashMap<>();
     private JSONArray shapes;
     private JSONArray configs;
 
@@ -42,10 +43,11 @@ class FileDecoder {
 
     /**
      * 解码组态
+     *
      * @return
      */
     public List<Config> decodeConfigs() {
-        List<Config> list=new ArrayList<>();
+        List<Config> list = new ArrayList<>();
         for (int i = 0; i < configs.size(); i++) {
 //            Log.i(TAG, "decodeConfigs: "+configs.get(i));
             JSONObject configJson = configs.getJSONObject(i);
@@ -57,21 +59,21 @@ class FileDecoder {
             String[] wheres = detail.split("where");
             //condition,用于构建Config的参数
             Condition condition;
-            if (wheres.length>1){
-                condition=decodeCondition(wheres[1].trim());
-            }else {
-                condition=null;
+            if (wheres.length > 1) {
+                condition = decodeCondition(wheres[1].trim());
+            } else {
+                condition = null;
             }
             //action,用于构建Config的参数
-            Action action=decodeAction(wheres[0].trim(),shapeMap.get(shapeId));
+            Action action = decodeAction(wheres[0].trim(), shapeMap.get(shapeId));
 
-            list.add(new Config(condition,action));
+            list.add(new Config(condition, action));
         }
         return list;
     }
 
-    private Action decodeAction(String s,Shape shape) {
-        Action action=new Action(shape,s);
+    private Action decodeAction(String s, Shape shape) {
+        Action action = new Action(shape, s);
         return action;
     }
 
@@ -81,70 +83,74 @@ class FileDecoder {
 
     /**
      * 解码图形
+     *
      * @return
      */
     public List<Shape> decodeShapes() {
-        List<Shape> list=new ArrayList<>();
+        List<Shape> list = new ArrayList<>();
         for (int i = 0; i < shapes.size(); i++) {
             JSONObject shapeJson = shapes.getJSONObject(i);
-            Shape shape=null;
-            switch (shapeJson.getString("type")){
+            Shape shape = null;
+            switch (shapeJson.getString("type")) {
                 case "rect":
-                    shape=decodeRectangle(shapeJson);
+                    shape = decodeRectangle(shapeJson);
                     break;
                 case "polygon":
-                    shape=decodePolygon(shapeJson);
+                    shape = decodePolygon(shapeJson);
                     break;
                 case "circle":
-                    shape=decodeCircle(shapeJson);
+                    shape = decodeCircle(shapeJson);
                     break;
                 case "text":
-                    shape=decodeText(shapeJson);
+                    shape = decodeText(shapeJson);
                     break;
                 case "line":
-                    shape=decodeLine(shapeJson);
+                    shape = decodeLine(shapeJson);
                     break;
                 case "linearrow":
-                    shape=decodeLineArrow(shapeJson);
+                    shape = decodeLineArrow(shapeJson);
+                    break;
+                case "image":
+                    shape = decodeImage(shapeJson);
                     break;
                 case "group":
-                    shape=decodeGroup(shapeJson);
+                    shape = decodeGroup(shapeJson);
                     break;
             }
             list.add(shape);
-            shapeMap.put(shapeJson.getInteger("id"),shape);
+            shapeMap.put(shapeJson.getInteger("id"), shape);
         }
         return list;
     }
 
     //<editor-fold desc="decodeShapes子方法">
     private Shape decodeGroup(JSONObject groupJson) {
-        ShapeGroup group=new ShapeGroup();
+        ShapeGroup group = new ShapeGroup();
         JSONArray shapes = groupJson.getJSONArray("shapeList");
         for (int i = 0; i < shapes.size(); i++) {
             JSONObject shapeJson = shapes.getJSONObject(i);
-            Shape shape=null;
-            switch (shapeJson.getString("type")){
+            Shape shape = null;
+            switch (shapeJson.getString("type")) {
                 case "rect":
-                    shape=decodeRectangle(shapeJson);
+                    shape = decodeRectangle(shapeJson);
                     break;
                 case "polygon":
-                    shape=decodePolygon(shapeJson);
+                    shape = decodePolygon(shapeJson);
                     break;
                 case "circle":
-                    shape=decodeCircle(shapeJson);
+                    shape = decodeCircle(shapeJson);
                     break;
                 case "text":
-                    shape=decodeText(shapeJson);
+                    shape = decodeText(shapeJson);
                     break;
                 case "line":
-                    shape=decodeLine(shapeJson);
+                    shape = decodeLine(shapeJson);
                     break;
                 case "linearrow":
-                    shape=decodeLineArrow(shapeJson);
+                    shape = decodeLineArrow(shapeJson);
                     break;
                 case "group":
-                    shape=decodeGroup(shapeJson);
+                    shape = decodeGroup(shapeJson);
                     break;
             }
             group.addShape(shape);
@@ -152,16 +158,33 @@ class FileDecoder {
         return group;
     }
 
+    private Shape decodeImage(JSONObject shapeJson) {
+        float startX = shapeJson.getFloatValue("startX");
+        float startY = shapeJson.getFloatValue("startY");
+        float width = shapeJson.getFloatValue("width");
+        float height = shapeJson.getFloatValue("height");
+        String base64 = shapeJson.getString("base64");
+        boolean isHMirror = shapeJson.getBooleanValue("isHMirror");
+        boolean isVMirror = shapeJson.getBooleanValue("isVMirror");
+        float angle = shapeJson.getFloatValue("angle");
+        ImageShape imageShape = new ImageShape(base64);
+        imageShape.setPosition((int) startX, (int) startY)
+                .setSize((int) width, (int) height)
+                .setMirror(isHMirror, isVMirror)
+                .setRadian((float) (Math.PI * angle / 180));
+        return imageShape;
+    }
+
     private Shape decodeLineArrow(JSONObject shapeJson) {
         JSONArray points = shapeJson.getJSONArray("points");
-        Point[] p=new Point[points.size()];
+        Point[] p = new Point[points.size()];
         for (int i = 0; i < points.size(); i++) {
             JSONObject point = points.getJSONObject(i);
-            p[i]=new Point(
+            p[i] = new Point(
                     point.getInteger("x"),
                     point.getInteger("y"));
         }
-        LineArrowShape shape=new LineArrowShape(p[0],p[1]);
+        LineArrowShape shape = new LineArrowShape(p[0], p[1]);
         shape.setLineWidth(shapeJson.getInteger("lineWidth"));
         shape.setLineColor(ColorUtil.parseColor(shapeJson.getString("lineColor")));
         return shape;
@@ -169,14 +192,14 @@ class FileDecoder {
 
     private Shape decodeLine(JSONObject shapeJson) {
         JSONArray points = shapeJson.getJSONArray("points");
-        Point[] p=new Point[points.size()];
+        Point[] p = new Point[points.size()];
         for (int i = 0; i < points.size(); i++) {
             JSONObject point = points.getJSONObject(i);
-            p[i]=new Point(
+            p[i] = new Point(
                     point.getInteger("x"),
                     point.getInteger("y"));
         }
-        LineShape shape=new LineShape(p[0],p[1]);
+        LineShape shape = new LineShape(p[0], p[1]);
         shape.setLineWidth(shapeJson.getInteger("lineWidth"));
         shape.setLineColor(ColorUtil.parseColor(shapeJson.getString("lineColor")));
         return shape;
@@ -184,7 +207,7 @@ class FileDecoder {
 
     private Shape decodeText(JSONObject shapeJson) {
         JSONArray text = shapeJson.getJSONArray("text");
-        TextShape shape=new TextShape(text.toArray(new String[1]));
+        TextShape shape = new TextShape(text.toArray(new String[1]));
         shape.setBackgroundColor(ColorUtil.parseColor(shapeJson.getString("backgroundColor")));
         shape.setTextColor(ColorUtil.parseColor(shapeJson.getString("fontColor")));
         shape.setTextSize(shapeJson.getInteger("fontSize"));
@@ -195,7 +218,7 @@ class FileDecoder {
 
     private Shape decodeCircle(JSONObject shapeJson) {
         JSONArray points = shapeJson.getJSONArray("points");
-        List<Point> pointList=new ArrayList<>();
+        List<Point> pointList = new ArrayList<>();
         for (int i = 0; i < points.size(); i++) {
             JSONObject point = points.getJSONObject(i);
             pointList.add(new Point(
@@ -203,13 +226,13 @@ class FileDecoder {
                     point.getInteger("y")
             ));
         }
-        int a= shapeJson.getInteger("a");
-        int b= shapeJson.getInteger("b");
-        Point center=new Point((pointList.get(0).x+pointList.get(2).x)/2,
-                (pointList.get(0).y+pointList.get(2).y)/2);
-        float radian= (float) Math.atan2(pointList.get(0).y-pointList.get(2).y,
-                pointList.get(0).x-pointList.get(2).x);
-        CircleShape shape=new CircleShape(a,b,center,radian);
+        int a = shapeJson.getInteger("a");
+        int b = shapeJson.getInteger("b");
+        Point center = new Point((pointList.get(0).x + pointList.get(2).x) / 2,
+                (pointList.get(0).y + pointList.get(2).y) / 2);
+        float radian = (float) Math.atan2(pointList.get(0).y - pointList.get(2).y,
+                pointList.get(0).x - pointList.get(2).x);
+        CircleShape shape = new CircleShape(a, b, center, radian);
         shape.setLineWidth(shapeJson.getInteger("lineWidth"));
         shape.setLineColor(ColorUtil.parseColor(shapeJson.getString("lineColor")));
         shape.setFillColor(ColorUtil.parseColor(shapeJson.getString("fillColor")));
@@ -218,7 +241,7 @@ class FileDecoder {
 
     private Shape decodePolygon(JSONObject shapeJson) {
         JSONArray points = shapeJson.getJSONArray("points");
-        List<Point> list=new ArrayList<>();
+        List<Point> list = new ArrayList<>();
         for (int i = 0; i < points.size(); i++) {
             JSONObject point = points.getJSONObject(i);
             list.add(new Point(
@@ -226,7 +249,7 @@ class FileDecoder {
                     point.getInteger("y")
             ));
         }
-        PolygonShape shape=new PolygonShape(list);
+        PolygonShape shape = new PolygonShape(list);
         shape.setLineWidth(shapeJson.getInteger("lineWidth"));
         shape.setLineColor(ColorUtil.parseColor(shapeJson.getString("lineColor")));
         shape.setFillColor(ColorUtil.parseColor(shapeJson.getString("fillColor")));
@@ -235,7 +258,7 @@ class FileDecoder {
 
     private Shape decodeRectangle(JSONObject shapeJson) {
         JSONArray points = shapeJson.getJSONArray("points");
-        List<Point> list=new ArrayList<>();
+        List<Point> list = new ArrayList<>();
         for (int i = 0; i < points.size(); i++) {
             JSONObject point = points.getJSONObject(i);
             list.add(new Point(
@@ -243,7 +266,7 @@ class FileDecoder {
                     point.getInteger("y")
             ));
         }
-        RectangleShape shape=new RectangleShape(list);
+        RectangleShape shape = new RectangleShape(list);
         shape.setLineWidth(shapeJson.getInteger("lineWidth"));
         shape.setLineColor(ColorUtil.parseColor(shapeJson.getString("lineColor")));
         shape.setFillColor(ColorUtil.parseColor(shapeJson.getString("fillColor")));

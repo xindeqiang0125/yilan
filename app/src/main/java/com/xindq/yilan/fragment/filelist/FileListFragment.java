@@ -1,6 +1,7 @@
 package com.xindq.yilan.fragment.filelist;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
@@ -15,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.xindq.yilan.R;
+import com.xindq.yilan.activity.screen.ScreenActivity;
 import com.xindq.yilan.domain.FileDetail;
 
 import org.angmarch.views.NiceSpinner;
@@ -24,7 +26,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 
-public class FileListFragment extends Fragment implements FileListPresenter.CallBack {
+public class FileListFragment extends Fragment implements FileListPresenter.CallBack, AdapterView.OnItemClickListener {
     private static final String TAG = "FileListFragment";
     private NiceSpinner spinner;
     private ListView listView;
@@ -55,6 +57,7 @@ public class FileListFragment extends Fragment implements FileListPresenter.Call
 
             }
         });
+        listView.setOnItemClickListener(this);
         return view;
     }
 
@@ -85,5 +88,14 @@ public class FileListFragment extends Fragment implements FileListPresenter.Call
             }
         });
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        FileListViewAdapter adapter = (FileListViewAdapter) parent.getAdapter();
+        FileDetail detail = (FileDetail) adapter.getItem(position);
+        Intent intent = new Intent(getActivity(), ScreenActivity.class);
+        intent.putExtra("fileId",detail.getId());
+        getActivity().startActivity(intent);
     }
 }

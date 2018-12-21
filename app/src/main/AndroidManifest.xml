@@ -24,8 +24,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.screen.ScreenActivity" />
-        <activity android:name=".activity.login.LoginActivity"></activity>
-        <activity android:name=".activity.item.ItemActivity"></activity>
+        <activity android:name=".activity.login.LoginActivity" />
+        <activity
+            android:name=".activity.history.HistoryActivity"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

@@ -59,6 +59,11 @@ public class Action {
     public static final int END_Y = 22;
 
     /**
+     * CircleShape和ImageShape可以的组态
+     */
+    public static final int ANGLE = 23;
+
+    /**
      * 该action绑定的shape
      */
     private Shape shape;
@@ -198,6 +203,8 @@ public class Action {
                 type = Action.END_X;
             } else if ("end.y".equals(action)) {
                 type = Action.END_Y;
+            } else if ("angle".equals(action)) {
+                type = Action.ANGLE;
             }
             //获取测点
             if (split[1].contains("{")) {
