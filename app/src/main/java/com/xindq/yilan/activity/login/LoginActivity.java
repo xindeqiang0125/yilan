@@ -98,17 +98,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void loginCallBack(HttpResult result) {
-        JSONObject msg = (JSONObject) result.getMsg();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (result.getResult().equals("成功")) {
+                    JSONObject msg = (JSONObject) result.getMsg();
                     loginStorage.putString("name", msg.getString("name"));
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     LoginActivity.this.finish();
                 } else {
-                    ToastUtil.showShort(LoginActivity.this, "用户或密码错误");
+                    ToastUtil.showShort(LoginActivity.this, "用户电话或密码错误");
                 }
 
             }
