@@ -16,12 +16,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.main.MainActivity">
-        </activity>
+        <activity android:name=".activity.main.MainActivity"></activity>
         <activity
             android:name=".activity.screen.ScreenActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".activity.login.LoginActivity" >
+        <activity
+            android:name=".activity.login.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,5 +33,4 @@
             android:name=".activity.history.HistoryActivity"
             android:screenOrientation="landscape" />
     </application>
-
 </manifest>
