@@ -6,6 +6,8 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.xindq.yilan.R;
 import com.xindq.yilan.domain.FileDetail;
+import com.xindq.yilan.util.SPStorage;
+import com.xindq.yilan.util.UrlUtil;
 import com.xindq.yilan.web.HttpClient;
 
 import java.util.List;
@@ -14,14 +16,18 @@ public class FileListPresenter {
     private static final String TAG = "FileListPresenter";
     private Context context;
     private CallBack callBack;
+    private SPStorage serverStorage;
 
     public FileListPresenter(Context context, CallBack callBack) {
         this.context = context;
         this.callBack = callBack;
+        this.serverStorage = new SPStorage(context, "server");
     }
 
     public void searchFiles(String family){
-        String url = context.getString(R.string.file_search_url) + "?family=" + family;
+        String serverAddr = serverStorage.getString("app_server_addr");
+        String path = context.getString(R.string.file_search_url);
+        String url = UrlUtil.getHttpUrl(serverAddr, path) + "?family=" + family;
         HttpClient.getInstance().get(url, new HttpClient.OnHttpResponse() {
             @Override
             public void onHttpResponse(String reponse) {
@@ -32,7 +38,9 @@ public class FileListPresenter {
     }
 
     public void requestFamilys(){
-        String url = context.getString(R.string.family_list_url);
+        String serverAddr = serverStorage.getString("app_server_addr");
+        String path = context.getString(R.string.family_list_url);
+        String url = UrlUtil.getHttpUrl(serverAddr, path);
         HttpClient.getInstance().get(url, new HttpClient.OnHttpResponse() {
             @Override
             public void onHttpResponse(String reponse) {

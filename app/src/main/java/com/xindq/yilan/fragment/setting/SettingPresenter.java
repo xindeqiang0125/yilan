@@ -7,6 +7,7 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.xindq.yilan.R;
 import com.xindq.yilan.util.SPStorage;
+import com.xindq.yilan.util.UrlUtil;
 import com.xindq.yilan.web.HttpClient;
 import com.xindq.yilan.web.HttpResult;
 
@@ -15,14 +16,18 @@ public class SettingPresenter {
 
     private CallBack callBack;
     private Context context;
+    private SPStorage serverStorage;
 
     public SettingPresenter(Context context, CallBack callBack) {
         this.callBack = callBack;
         this.context = context;
+        this.serverStorage = new SPStorage(context, "server");
     }
 
     public void saveUser(String phone, String name, String password) {
-        String url = context.getString(R.string.update_user_url) + "?tel=" + phone + "&password=" + password + "&name=" + name;
+        String serverAddr = serverStorage.getString("app_server_addr");
+        String path = context.getString(R.string.update_user_url);
+        String url = UrlUtil.getHttpUrl(serverAddr, path) + "?tel=" + phone + "&password=" + password + "&name=" + name;
         HttpClient.getInstance().get(url, new HttpClient.OnHttpResponse() {
             @Override
             public void onHttpResponse(String reponse) {

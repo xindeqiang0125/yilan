@@ -18,6 +18,7 @@ import com.xindq.yilan.util.ToastUtil;
 import com.xindq.yilan.web.HttpResult;
 
 public class SettingFragment extends Fragment implements View.OnClickListener, SettingPresenter.CallBack {
+    private EditText etAppServerAddr;
     private EditText etRealDataAddr;
     private EditText etHistoryDataAddr;
     private EditText etPassword;
@@ -27,7 +28,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
 
     private SettingPresenter presenter;
     private SPStorage loginStorage;
-    private SPStorage settingStorage;
+    private SPStorage serverStorage;
 
     @Nullable
     @Override
@@ -41,14 +42,16 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
 
     private void initData() {
         loginStorage = new SPStorage(getActivity(),"login");
-        settingStorage = new SPStorage(getActivity(),"setting");
-        etRealDataAddr.setText(settingStorage.getString("real_data_addr"));
-        etHistoryDataAddr.setText(settingStorage.getString("history_data_addr"));
+        serverStorage = new SPStorage(getActivity(),"server");
+        etAppServerAddr.setText(serverStorage.getString("app_server_addr"));
+        etRealDataAddr.setText(serverStorage.getString("real_data_addr"));
+        etHistoryDataAddr.setText(serverStorage.getString("history_data_addr"));
         etName.setText(loginStorage.getString("name"));
         etPassword.setText(loginStorage.getString("password"));
     }
 
     private void initView(View view) {
+        etAppServerAddr = view.findViewById(R.id.app_server_addr);
         etRealDataAddr = view.findViewById(R.id.real_data_addr);
         etHistoryDataAddr = view.findViewById(R.id.history_data_addr);
         etPassword = view.findViewById(R.id.change_password);
@@ -80,8 +83,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
     }
 
     private void saveData() {
-        settingStorage.putString("real_data_addr",etRealDataAddr.getText().toString());
-        settingStorage.putString("history_data_addr",etHistoryDataAddr.getText().toString());
+        serverStorage.putString("app_server_addr",etAppServerAddr.getText().toString());
+        serverStorage.putString("real_data_addr",etRealDataAddr.getText().toString());
+        serverStorage.putString("history_data_addr",etHistoryDataAddr.getText().toString());
         loginStorage.putString("name",etName.getText().toString());
         loginStorage.putString("password",etPassword.getText().toString());
     }

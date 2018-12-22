@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,11 +11,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="2dp"
             android:background="@drawable/rectangle"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="应用服务器地址"
+                android:layout_marginVertical="5dp"/>
 
+            <EditText
+                android:id="@+id/app_server_addr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/content_editor_border"
+                android:paddingLeft="15dp"
+                android:singleLine="true"
+                android:textSize="30sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,10 +63,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="2dp"
             android:background="@drawable/rectangle"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -100,8 +113,7 @@
             android:id="@+id/btn_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="40dp"
+            android:layout_margin="10dp"
             android:background="@drawable/btn_danger"
             android:text="退出"
             android:textColor="#FFFFFF"

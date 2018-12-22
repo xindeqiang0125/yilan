@@ -20,7 +20,19 @@
         android:layout_marginTop="15dp"
         android:textColor="#DE1010"
         android:text="@string/login_tip" />
-
+    <EditText
+        android:id="@+id/loginServer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/login_editor_border"
+        android:ems="10"
+        android:hint="@string/login_server_tip"
+        android:inputType="text"
+        android:paddingLeft="15dp"
+        android:singleLine="true">
+        <requestFocus />
+    </EditText>
     <EditText
         android:id="@+id/loginTel"
         android:layout_width="match_parent"
@@ -32,7 +44,6 @@
         android:inputType="number"
         android:paddingLeft="15dp"
         android:singleLine="true">
-
         <requestFocus />
     </EditText>
 
