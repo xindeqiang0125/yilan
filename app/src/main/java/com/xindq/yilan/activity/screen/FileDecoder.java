@@ -151,6 +151,9 @@ class FileDecoder {
                 case "linearrow":
                     shape = decodeLineArrow(shapeJson);
                     break;
+                case "image":
+                    shape = decodeImage(shapeJson);
+                    break;
                 case "group":
                     shape = decodeGroup(shapeJson);
                     break;
