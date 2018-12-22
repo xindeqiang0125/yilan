@@ -63,11 +63,11 @@ public class RectangleShape extends PolygonShape {
 
     public void setWidth(float width, int relative) {
         if (relative == RELATIVE_LEFT) {
-            Util.scale(getPoint(0), getPoint(1), width / this.width);
-            Util.scale(getPoint(3), getPoint(2), width / this.width);
+            Util.scale(getPoint(0), getPoint(1), width);
+            Util.scale(getPoint(3), getPoint(2), width);
         } else if (relative == RELATIVE_RIGHT) {
-            Util.scale(getPoint(1), getPoint(0), width / this.width);
-            Util.scale(getPoint(2), getPoint(3), width / this.width);
+            Util.scale(getPoint(1), getPoint(0), width);
+            Util.scale(getPoint(2), getPoint(3), width);
         }
         this.width = width;
         updateBorder();
@@ -80,11 +80,11 @@ public class RectangleShape extends PolygonShape {
 
     public void setHeight(float height, int relative) {
         if (relative == RELATIVE_TOP) {
-            Util.scale(getPoint(0), getPoint(3), height / this.height);
-            Util.scale(getPoint(1), getPoint(2), height / this.height);
+            Util.scale(getPoint(0), getPoint(3), height);
+            Util.scale(getPoint(1), getPoint(2), height);
         } else if (relative == RELATIVE_BOTTOM) {
-            Util.scale(getPoint(3), getPoint(0), height / this.height);
-            Util.scale(getPoint(2), getPoint(1), height / this.height);
+            Util.scale(getPoint(3), getPoint(0), height);
+            Util.scale(getPoint(2), getPoint(1), height);
         }
         this.height = height;
         updateBorder();

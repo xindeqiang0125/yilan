@@ -1,23 +1,18 @@
 package com.xindq.yilan.fragment.search;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.xindq.yilan.R;
-import com.xindq.yilan.dialog.ItemDialog;
-import com.xindq.yilan.dialog.ItemDialogBtnListener;
+import com.xindq.yilan.dialog.item.ItemDialog;
+import com.xindq.yilan.dialog.item.ItemDialogBtnListener;
 import com.xindq.yilan.domain.Item;
 
 import java.io.UnsupportedEncodingException;

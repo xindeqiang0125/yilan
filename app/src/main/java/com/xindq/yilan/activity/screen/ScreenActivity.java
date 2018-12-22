@@ -1,27 +1,21 @@
 package com.xindq.yilan.activity.screen;
 
 import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import com.xindq.yilan.R;
-import com.xindq.yilan.dialog.ItemDialog;
-import com.xindq.yilan.dialog.ItemDialogBtnListener;
+import com.xindq.yilan.dialog.item.ItemDialog;
+import com.xindq.yilan.dialog.item.ItemDialogBtnListener;
 import com.xindq.yilan.dialog.pop.BottomPopMenu;
 import com.xindq.yilan.domain.Item;
-import com.xindq.yilan.util.ToastUtil;
 import com.xindq.yilan.view.ScreenView;
 import com.xindq.yilan.view.config.Config;
 import com.xindq.yilan.view.shape.Shape;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;

@@ -85,9 +85,9 @@ public class LineShape extends Shape {
 
     public void setLength(float length, int relative) {
         if (relative == RELATIVE_START) {
-            Util.scale(start, end, length / this.length);
+            Util.scale(start, end, length);
         } else if (relative == RELATIVE_END) {
-            Util.scale(end, start, length / this.length);
+            Util.scale(end, start, length);
         }
         this.length = length;
         updateBorder();

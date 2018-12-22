@@ -1,4 +1,4 @@
-package com.xindq.yilan.dialog;
+package com.xindq.yilan.dialog.item;
 
 import android.content.Context;
 import android.content.Intent;
