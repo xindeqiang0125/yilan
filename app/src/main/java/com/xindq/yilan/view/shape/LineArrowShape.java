@@ -40,6 +40,12 @@ public class LineArrowShape extends LineShape {
     }
 
     @Override
+    public void setStart(Point start) {
+        super.setStart(start);
+        initPath();
+    }
+
+    @Override
     public void setEnd(Point end) {
         super.setEnd(end);
         initPath();
