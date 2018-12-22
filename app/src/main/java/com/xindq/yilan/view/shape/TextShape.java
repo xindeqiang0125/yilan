@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.util.Log;
 
 import com.xindq.yilan.view.config.Action;
 
@@ -81,13 +80,13 @@ public class TextShape extends Shape {
                 }
                 setTexts((String[]) value);
                 break;
-            case Action.TEXT_COLOR:
+            case Action.FONT_COLOR:
                 setTextColor((Integer) value);
                 break;
             case Action.BACKGROUND_COLOR:
                 setBackgroundColor((Integer) value);
                 break;
-            case Action.TEXT_SIZE:
+            case Action.FONT_SIZE:
                 setTextSize(((Float) value).intValue());
                 break;
         }

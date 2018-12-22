@@ -1,10 +1,7 @@
 package com.xindq.yilan.view.config;
 
-import android.util.Log;
-
 import com.xindq.yilan.util.ColorUtil;
 import com.xindq.yilan.view.shape.CircleShape;
-import com.xindq.yilan.view.shape.LineArrowShape;
 import com.xindq.yilan.view.shape.LineShape;
 import com.xindq.yilan.view.shape.RectangleShape;
 import com.xindq.yilan.view.shape.Shape;
@@ -45,9 +42,9 @@ public class Action {
      * TextShape可以的组态
      */
     public static final int TEXTS = 14;
-    public static final int TEXT_COLOR = 15;
+    public static final int FONT_COLOR = 15;
     public static final int BACKGROUND_COLOR = 16;
-    public static final int TEXT_SIZE = 17;
+    public static final int FONT_SIZE = 17;
 
     /**
      * LineShape,LineArrowShape可以的组态
@@ -142,6 +139,7 @@ public class Action {
 
     public Action(Shape shape, String s) {
         this.shape = shape;
+        //action表达式转为小写
         s = s.toLowerCase();
         s = s.replace(" ", "");
         if ("hide".equals(s)) {
@@ -183,10 +181,10 @@ public class Action {
                 type = Action.RADIUS;
             } else if ("text".equals(action)) {
                 type = Action.TEXTS;
-            } else if ("textcolor".equals(action)) {
-                type = Action.TEXT_COLOR;
-            } else if ("textsize".equals(action)) {
-                type = Action.TEXT_SIZE;
+            } else if ("fontcolor".equals(action)) {
+                type = Action.FONT_COLOR;
+            } else if ("fontsize".equals(action)) {
+                type = Action.FONT_SIZE;
             } else if ("backgroundcolor".equals(action)) {
                 type = Action.BACKGROUND_COLOR;
             } else if ("linelength.start".equals(action)) {
@@ -241,7 +239,7 @@ public class Action {
         }else {
             if (enable) {
                 Object value = getValue(datas, item);
-                if (type == Action.TEXT_COLOR || type == Action.BACKGROUND_COLOR ||
+                if (type == Action.FONT_COLOR || type == Action.BACKGROUND_COLOR ||
                         type == Action.FILL_COLOR || type == Action.LINE_COLOR) {
                     value = ColorUtil.parseColor((String) value);
                 } else {
@@ -323,10 +321,10 @@ public class Action {
                 case Action.START_Y:
                     oldValue = ((LineShape) shape).getStart().y;
                     break;
-                case Action.TEXT_COLOR:
+                case Action.FONT_COLOR:
                     oldValue = ((TextShape) shape).getTextColor();
                     break;
-                case Action.TEXT_SIZE:
+                case Action.FONT_SIZE:
                     oldValue = ((TextShape) shape).getTextSize();
                     break;
                 case Action.TEXTS:
