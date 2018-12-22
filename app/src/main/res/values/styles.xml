@@ -33,4 +33,10 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
+
+    <style name="pop_menu_item">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#333333</item>
+    </style>
+
 </resources>

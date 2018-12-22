@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import com.xindq.yilan.R;
 import com.xindq.yilan.dialog.ItemDialog;
 import com.xindq.yilan.dialog.ItemDialogBtnListener;
+import com.xindq.yilan.dialog.pop.BottomPopMenu;
 import com.xindq.yilan.domain.Item;
 import com.xindq.yilan.util.ToastUtil;
 import com.xindq.yilan.view.ScreenView;
@@ -20,6 +21,7 @@ import com.xindq.yilan.view.config.Config;
 import com.xindq.yilan.view.shape.Shape;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,7 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
         setContentView(R.layout.activity_screen);
 
         screenContainer = findViewById(R.id.screen_container);
-        presenter=new ScreenPresenter(this,this);
+        presenter = new ScreenPresenter(this, this);
         int fileId = getIntent().getIntExtra("fileId", 1);
         presenter.requestShapesAndConfigs(fileId);
     }
@@ -56,6 +58,7 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
 
     /**
      * 解析图形组态完成回调函数
+     *
      * @param shapes
      * @param configs
      */
@@ -65,7 +68,7 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
             @Override
             public void run() {
                 //创建ScreenView，并初始化
-                ScreenView screenView=new ScreenView(ScreenActivity.this);
+                ScreenView screenView = new ScreenView(ScreenActivity.this);
                 screenView.setRefreshTime(100);
                 screenView.setBackgroundColor(Color.parseColor("#660000ff"));
                 //LayoutParams，并初始化
@@ -73,7 +76,7 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
                         new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(10,10,10,10);
+                params.setMargins(10, 10, 10, 10);
                 //将获取的图形加入screenView
                 for (Shape shape : shapes) {
                     screenView.addShape(shape);
@@ -82,11 +85,11 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
                 screenView.setOnLongClickShape(ScreenActivity.this);
                 //将screenView加入screenContainer
                 screenContainer.addView(screenView, params);
-                ScreenActivity.this.configs=configs;
+                ScreenActivity.this.configs = configs;
             }
         });
-        Set<String> requestItems=new HashSet<>();
-        for (Config config : configs){
+        Set<String> requestItems = new HashSet<>();
+        for (Config config : configs) {
             requestItems.addAll(config.getRequestItems());
         }
         presenter.requestdatas(requestItems);
@@ -94,6 +97,7 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
 
     /**
      * 接受到实时数据回调函数
+     *
      * @param datas
      */
     @Override
@@ -105,13 +109,13 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
 
     @Override
     public void onGetItem(Item item) {
-        Log.i(TAG, "onGetItem: "+item);
+        Log.i(TAG, "onGetItem: " + item);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 dialog = new ItemDialog(ScreenActivity.this);
                 dialog.setItem(item)
-                        .setOnClickBtnListener(new ItemDialogBtnListener(ScreenActivity.this,dialog))
+                        .setOnClickBtnListener(new ItemDialogBtnListener(ScreenActivity.this, dialog))
                         .show();
             }
         });
@@ -120,17 +124,32 @@ public class ScreenActivity extends AppCompatActivity implements ScreenCallback,
     @Override
     public void onLongClickShape(Shape shape) {
         List<Config> configsByShape = getConfigsByShape(shape);
-
+        List<String> menus = new ArrayList<>();
         for (Config config : configsByShape) {
-            presenter.requestItem(Integer.parseInt(config.getActionItem()));
+            String actionItem = config.getActionItem();
+            if (actionItem != null && !menus.contains("测点:" + actionItem))
+                menus.add("测点:" + actionItem);
+            Set<String> conditionItems = config.getConditionItems();
+            for (String conditionItem : conditionItems) {
+                if (conditionItem != null && !menus.contains("测点:" + conditionItem))
+                    menus.add("测点:" + conditionItem);
+            }
         }
-
+        BottomPopMenu popMenu = new BottomPopMenu(ScreenActivity.this);
+        popMenu.setMenus(menus)
+                .setOnCilckMenuItemListener(new BottomPopMenu.OnCilckMenuItemListener() {
+                    @Override
+                    public void onMenuItemClicked(BottomPopMenu menu, int position) {
+                        String s = menu.getMenuText(position).split(":")[1];
+                        presenter.requestItem(Integer.parseInt(s));
+                    }
+                }).show();
     }
 
-    private List<Config> getConfigsByShape(Shape shape){
-        List<Config> c=new ArrayList<>();
+    private List<Config> getConfigsByShape(Shape shape) {
+        List<Config> c = new ArrayList<>();
         for (Config config : configs) {
-            if (config.getAction().getShape()==shape) {
+            if (config.getAction().getShape() == shape) {
                 c.add(config);
             }
         }
