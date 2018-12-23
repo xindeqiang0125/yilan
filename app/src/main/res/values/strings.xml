@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">XCS Client</string>
-    <string name="welcome">欢迎使用工业实时数据监控应用软件</string>
+    <string name="welcome">欢迎使用</string>
+    <string name="login_show_name">工业实时数据监测应用软件</string>
     <string name="login_tip">请先登录</string>
     <string name="login_server_tip">请输入应用服务器地址</string>
     <string name="login_phone_tip">请输入您的登录电话</string>
