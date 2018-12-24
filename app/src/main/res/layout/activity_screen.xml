@@ -11,14 +11,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <!--<com.xindq.yilan.view.ScreenView-->
-                <!--android:id="@+id/screenView"-->
-                <!--android:layout_width="200dp"-->
-                <!--android:layout_height="200dp"-->
-                <!--android:layout_margin="10dp"-->
-                <!--app:refreshTime="100"/>-->
         </LinearLayout>
-
     </HorizontalScrollView>
 </ScrollView>

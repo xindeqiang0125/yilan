@@ -236,7 +236,7 @@ public class Action {
             shape.setShow(!enable);
         } else if (type == TWINKLE) {
             shape.setTwinkle(enable);
-        }else {
+        } else {
             if (enable) {
                 Object value = getValue(datas, item);
                 if (type == Action.FONT_COLOR || type == Action.BACKGROUND_COLOR ||
@@ -258,7 +258,8 @@ public class Action {
                 shape.excuteAction(type, value, option);
             } else {
                 //回复原始值
-                shape.excuteAction(type, oldValue, option);
+                if (oldValue != null)
+                    shape.excuteAction(type, oldValue, option);
             }
         }
 
@@ -267,7 +268,7 @@ public class Action {
     /**
      * 记录组态未启动时原始值
      */
-    private void recordOldValue(){
+    private void recordOldValue() {
         if (oldValue == null) {
             switch (type) {
                 case Action.A:
